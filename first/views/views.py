@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from django.http import HttpResponse
 
 import psycopg2
@@ -30,8 +29,24 @@ pprint.pprint(records)
 
 s = "Hello, world. You're at the polls index." + str(records[0][0])
 
-def index(request):
-    return HttpResponse(s)
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+
+from .forms import NameForm
+
+def get_name(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NameForm(request.POST)
+        # check whether it's valid:
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NameForm()
+
+    return render(request, 'request.html', {'form': form})
 
 # Create your views here.
-<h1> asdasdas</h1>
+
+
+		
