@@ -18,21 +18,22 @@ app.get('/',function(req,res){
 });
 
 app.get('/query',function(req,res){
-  res.sendFile(path.join(__dirname+'/test.html'));
+  res.sendFile(path.join(__dirname+'/query.html'));
   //__dirname : It will resolve to your project folder.
 });
 
 app.get('/response',function(req,res){
   var query = req.query.firstname;
-  
+  let a;
   client.query(query, (err, res) => {
   if (err) {
     console.log(err.stack)
   } else {
-    console.log(res.rows[0])
+    a = JSON.stringify(res.rows[0])
+    console.log(a)
   }
 })
-  res.send(query);
+  res.send(a);
   //__dirname : It will resolve to your project folder.
 });
 
