@@ -13,6 +13,9 @@ let request = require('./routes/request');
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
 let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
 
+var client = new pg.Client(conString);
+client.connect();
+
 let app = express();
 
 // view engine setup
@@ -32,10 +35,69 @@ app.use('/users', users);
 
 
 // GET response page from query
-app.get('/request', function(req, res, next) {
-	let response = ''+req.query.query
-	res.render('request', { query: response});
+app.get('/request', function(req, resp, next) {
+	let response = ''+req.query.query;
+	let jsResponse = [];
+	let a = '';
+	client.query(response, (err, res) => {
+		if (err) {
+			console.log(err.stack);
+			resp.send('ERROR, QUERY')
+		} else {
+			jsResponse = res.rows;
+			console.log(jsResponse[0]);
+			resp.render('vendedorInsert', { elementos: jsResponse[0]});
+		}
+	});
+	
 });
+
+//Insert de Vendedor
+app.get('/datoIngresadoVendedor', function(req, resp, next) {
+	let response = ''+req;
+	
+	let atributos = [];
+	atributos.push(req.query.vendedorid);
+	atributos.push(req.query.nombre);
+	atributos.push(req.query.apellido);
+	atributos.push(Date.parse(req.query.f_nacimiento, "dd/mm/yyyy"));
+	console.log(atributos);
+	
+	let jsResponse = [];
+	let a = '';
+	let q = 'INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento)';
+	q += ' VALUES (' + atributos[0] + ',"' + atributos[1] + '","' + atributos[2] + '",' + atributos[3];
+	q += ');';
+	let p = 'INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento) VALUES (3, "Gabriel", "Gonzales", 19/9/1998)';
+	console.log(q, p); 
+	client.query(p, (err, res) => {
+		if (err) {
+			console.log(err.stack);
+			resp.send('ERROR, QUERY')
+		} else {
+			jsResponse = res.rows;
+			console.log(jsResponse[0]);
+			resp.send('Si se pudo!');
+			//resp.render('vendedorInsert', { elementos: jsResponse[0]});
+		}
+	});
+	
+});
+
+app.get('/response',function(req,res){
+  var query = req.query.firstname;
+  let a;
+  client.query(query, (err, res) => {
+  if (err) {
+    console.log(err.stack)
+  } else {
+    a = JSON.stringify(res.rows[0])
+    console.log(a)
+  }
+})
+  res.send(a);
+  //__dirname : It will resolve to your project folder.
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

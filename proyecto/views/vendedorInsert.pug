@@ -1,0 +1,9 @@
+doctype html
+html
+	head
+		title Homepage
+	body
+		form(action="/datoIngresadoVendedor", method="get")
+			each elemento, nombre in elementos
+				input(id=nombre, type="text", name=nombre, placeholder=elemento)
+			input(type="submit")
