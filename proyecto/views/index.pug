@@ -1,8 +1,18 @@
+//-doctype html
+//-html
+//-	head
+//-		title Homepage
+//-	body
+//-		form(action="/request", method="get")
+//-			input(type="submit")
+//-
+
 doctype html
 html
-	head
-		title Homepage
-	body
-		form(action="/request", method="get")
-			input#query(type="text", name="query", placeholder="query")
-			input(type="submit")
+head
+	title Inicio
+body
+	h1 Vendedor
+	a(href='/vendedorInsert') Insertar
+	br
+	a(href='/showVendedor') Mostrar

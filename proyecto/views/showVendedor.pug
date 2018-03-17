@@ -4,7 +4,10 @@ html
 		title Homepage
 	body
 		form(action="/datoIngresadoVendedor", method="get")
+		ul
 			each tupla in elementos
+				li
 				each elemento, nombre in tupla
 					input(id=nombre, type="text", name=nombre, placeholder=elemento)
-			input(type="submit")
+
+			

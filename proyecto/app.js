@@ -35,8 +35,8 @@ app.use('/users', users);
 
 
 // GET response page from query
-app.get('/request', function(req, resp, next) {
-	let response = ''+req.query.query;
+app.get('/vendedorInsert', function(req, resp, next) {
+	let response = 'SELECT * FROM Vendedor LIMIT 1';
 	let jsResponse = [];
 	let a = '';
 	client.query(response, (err, res) => {
@@ -46,7 +46,7 @@ app.get('/request', function(req, resp, next) {
 		} else {
 			jsResponse = res.rows;
 			console.log(jsResponse[0]);
-			resp.render('vendedorInsert', { elementos: jsResponse[0]});
+			resp.render('vendedorInsert', { elementos: jsResponse});
 		}
 	});
 	
@@ -60,17 +60,17 @@ app.get('/datoIngresadoVendedor', function(req, resp, next) {
 	atributos.push(req.query.vendedorid);
 	atributos.push(req.query.nombre);
 	atributos.push(req.query.apellido);
-	atributos.push(Date.parse(req.query.f_nacimiento, "dd/mm/yyyy"));
+	atributos.push(req.query.f_nacimiento);
 	console.log(atributos);
 	
 	let jsResponse = [];
 	let a = '';
-	let q = 'INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento)';
-	q += ' VALUES (' + atributos[0] + ',"' + atributos[1] + '","' + atributos[2] + '",' + atributos[3];
-	q += ');';
-	let p = 'INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento) VALUES (3, "Gabriel", "Gonzales", 19/9/1998)';
-	console.log(q, p); 
-	client.query(p, (err, res) => {
+	let q = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento)";
+	q += " VALUES ('" + atributos[0] + "','" + atributos[1] + "','" + atributos[2] + "','" + atributos[3] +"'";
+	q += ");";
+	//let p = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento) VALUES (3, 'Gabriel', 'Gonzales', '1998-09-08')";
+	//console.log(q, p); 
+	client.query(q, (err, res) => {
 		if (err) {
 			console.log(err.stack);
 			resp.send('ERROR, QUERY')
@@ -83,6 +83,22 @@ app.get('/datoIngresadoVendedor', function(req, resp, next) {
 	});
 	
 });
+
+app.get('/showVendedor',function(req, resp, next){
+  var query = 'SELECT * from Vendedor';
+  let jsResponse = [];
+  client.query(query, (err, res) => {
+  if (err) {
+    console.log(err.stack)
+  } else {
+    jsResponse = res.rows;
+    console.log(jsResponse);
+    resp.render('showVendedor', {elementos : jsResponse});
+  }
+})
+  
+  //__dirname : It will resolve to your project folder.
+})
 
 app.get('/response',function(req,res){
   var query = req.query.firstname;
