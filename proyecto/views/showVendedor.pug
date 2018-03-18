@@ -3,11 +3,8 @@ html
 	head
 		title Homepage
 	body
-		form(action="/datoIngresadoVendedor", method="get")
-		ul
+		table(border = '1')
 			each tupla in elementos
-				li
+				tr
 				each elemento, nombre in tupla
-					input(id=nombre, type="text", name=nombre, placeholder=elemento)
-
-			
+					td #{elemento}
