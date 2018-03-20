@@ -6,5 +6,5 @@ html
 		form(action="/datoIngresadoVendedor", method="get")
 			each tupla in elementos
 				each elemento, nombre in tupla
-					input(id=nombre, type="text", name=nombre, placeholder=elemento)
+					input(id=nombre, type="text", name=nombre, placeholder=nombre)
 			input(type="submit")
