@@ -11,8 +11,8 @@ let users = require('./routes/users');
 let request = require('./routes/request');
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-let conString = "postgres://postgres:admin@localhost:5432/turismo";
+let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+//let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 var client = new pg.Client(conString);
 client.connect();
@@ -84,6 +84,33 @@ app.get('/datoIngresadoVendedor', function(req, resp, next) {
 	});
 
 });
+
+
+
+//Eliminar
+app.get('/eliminarVendedor', function(req, resp, next) {
+	let obj = req.query;
+	let key = Object.keys(obj)[0];
+	console.log(key);
+
+  let q = "DELETE FROM Vendedor WHERE "+key+" =" + obj.vendedorid;
+
+  //let p = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento) VALUES (3, 'Gabriel', 'Gonzales', '1998-09-08')";
+  //console.log(q, p);
+
+  client.query(q, (err, res) => {
+    if (err) {
+      console.log(err.stack);
+      resp.send('ERROR, QUERY')
+    } else {
+      resp.send('Si se pudo eliminar vendedor' + req.query.id + '!');
+      //resp.render('vendedorInsert', { elementos: jsResponse[0]});
+    }
+  });
+
+});
+
+
 
 app.get('/showVendedor',function(req, resp, next){
   var query = 'SELECT * from Vendedor';

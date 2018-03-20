@@ -13,5 +13,7 @@ p Ordenar Informacion de la Base de datos
 				tr
 					each elemento, nombre in tupla
 						td #{elemento}
-					td 
-						a(href='/eliminarVendedor?id=' + tupla[Object.keys(tupla)[0]]) delete
+					td
+						form(action="/eliminarVendedor", method="get")
+							input(type="hidden", name=Object.keys(tupla)[0], value=tupla[Object.keys(tupla)[0]])
+							input(type="submit", value="Delete")
