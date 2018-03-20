@@ -6,5 +6,7 @@ html
 		table(border = '1')
 			each tupla in elementos
 				tr
-				each elemento, nombre in tupla
-					td #{elemento}
+					each elemento, nombre in tupla
+						td #{elemento}
+					td 
+						a(href='/eliminarVendedor?id=' + tupla[Object.keys(tupla)[0]]) delete
