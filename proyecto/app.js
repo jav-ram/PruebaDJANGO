@@ -11,7 +11,8 @@ let users = require('./routes/users');
 let request = require('./routes/request');
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 var client = new pg.Client(conString);
 client.connect();
@@ -49,27 +50,27 @@ app.get('/vendedorInsert', function(req, resp, next) {
 			resp.render('vendedorInsert', { elementos: jsResponse});
 		}
 	});
-	
+
 });
 
 //Insert de Vendedor
 app.get('/datoIngresadoVendedor', function(req, resp, next) {
 	let response = ''+req;
-	
+
 	let atributos = [];
 	atributos.push(req.query.vendedorid);
 	atributos.push(req.query.nombre);
 	atributos.push(req.query.apellido);
 	atributos.push(req.query.f_nacimiento);
 	console.log(atributos);
-	
+
 	let jsResponse = [];
 	let a = '';
 	let q = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento)";
 	q += " VALUES ('" + atributos[0] + "','" + atributos[1] + "','" + atributos[2] + "','" + atributos[3] +"'";
 	q += ");";
 	//let p = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento) VALUES (3, 'Gabriel', 'Gonzales', '1998-09-08')";
-	//console.log(q, p); 
+	//console.log(q, p);
 	client.query(q, (err, res) => {
 		if (err) {
 			console.log(err.stack);
@@ -81,7 +82,7 @@ app.get('/datoIngresadoVendedor', function(req, resp, next) {
 			//resp.render('vendedorInsert', { elementos: jsResponse[0]});
 		}
 	});
-	
+
 });
 
 app.get('/showVendedor',function(req, resp, next){
@@ -96,9 +97,31 @@ app.get('/showVendedor',function(req, resp, next){
     resp.render('showVendedor', {elementos : jsResponse});
   }
 })
-  
+
+
+
   //__dirname : It will resolve to your project folder.
 })
+
+app.get('/showVendedorperName',function(req, resp, next){
+  var query = 'SELECT * from Vendedor ORDER BY nombre DESC';
+  let jsResponse = [];
+  client.query(query, (err, res) => {
+  if (err) {
+    console.log(err.stack)
+  } else {
+    jsResponse = res.rows;
+    console.log(jsResponse);
+    resp.render('showVendedor', {elementos : jsResponse});
+  }
+})
+
+
+
+  //__dirname : It will resolve to your project folder.
+})
+
+
 
 app.get('/response',function(req,res){
   var query = req.query.firstname;
