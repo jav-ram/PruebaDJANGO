@@ -38,3 +38,71 @@ try {
 catch (err) {
 	console.log("WELP");
 }
+
+
+
+
+
+
+app.get('/vendedorInsert', function(req, resp, next) {
+	//let response = 'SELECT * FROM Vendedor LIMIT 1';
+	let response = "select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + req.query.tabla + "';";
+	let jsResponse = [];
+	let a = '';
+	client.query(response, (err, res) => {
+		if (err) {
+			console.log(err.stack);
+			resp.send('ERROR, QUERY')
+		} else {
+			let rw = res.rows;
+			for (let i = 0; i < rw.length; i++){
+				jsResponse.push(rw[i].column_name);
+			}
+
+			console.log(jsResponse, rw.length);
+			resp.render('vendedorInsert', { elementos: jsResponse, tabla: req.query.tabla});
+		}
+	})
+	/*
+	client.query(response, (err, res) => {
+		if (err) {
+			console.log(err.stack);
+			resp.send('ERROR, QUERY')
+		} else {
+			jsResponse = res.rows;
+			console.log(jsResponse[0]);
+			resp.render('vendedorInsert', { elementos: jsResponse});
+		}
+	});*/
+
+});
+
+
+
+
+	try{
+		if (r.id == 'on') {
+			qry += 'vendedorid '
+			if(r[key[1]] == 'on'| r.apellido == 'on'| r.f_nacimiento == 'on'){
+		    qry += ', '
+		  }
+		}
+		if (r.nombre == 'on'){
+		  qry += 'nombre '
+		  if(r.apellido == 'on' | r.f_nacimiento == 'on'){
+		    qry += ', '
+		  }
+		}
+		if (r.apellido == 'on'){
+		  qry += 'apellido '
+		  if(r.f_nacimiento == 'on'){
+		    qry += ', '
+		  }
+		}
+		if (r.f_nacimiento == 'on'){
+		  qry += 'f_nacimiento '
+		}
+	}
+	catch(err){
+		console.log("nope");
+	}

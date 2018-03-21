@@ -55,17 +55,6 @@ app.get('/vendedorInsert', function(req, resp, next) {
 			resp.render('vendedorInsert', { elementos: jsResponse, tabla: req.query.tabla});
 		}
 	})
-	/*
-	client.query(response, (err, res) => {
-		if (err) {
-			console.log(err.stack);
-			resp.send('ERROR, QUERY')
-		} else {
-			jsResponse = res.rows;
-			console.log(jsResponse[0]);
-			resp.render('vendedorInsert', { elementos: jsResponse});
-		}
-	});*/
 
 });
 
@@ -145,104 +134,50 @@ app.get('/eliminarVendedor', function(req, resp, next) {
 
 app.get('/showVendedor',function(req, resp, next){
 	let r = req.query
-	let key = Object.keys(r)[0];
+	let key = Object.keys(r);
 	let qry = 'SELECT '
-	//let key = Object.keys(obj);
-	//console.log(key[0]);
-/*
-	try {
-		let key = Object.keys(obj);
-	}
-	catch(err){
-		console.log("Es nulo");
-	}
-	*/
-/*
-	try {
-		console.log(key[0]);
-	}
-	catch(err){
-		console.log("es la implementacion base");
-	}
-*/
 
-	try{
-		if (r.id == 'on') {
-			qry += 'vendedorid '
-			if(r.nombre == 'on'| r.apellido == 'on'| r.f_nacimiento == 'on'){
-		    qry += ', '
-		  }
+	///inicia
+
+
+	let response = "select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + req.query.tabla + "';";
+	let jsResponse = [];
+	let a = '';
+	client.query(response, (err, res) => {
+		if (err) {
+			console.log(err.stack);
+			resp.send('ERROR, QUERY')
+		} else {
+			let rw = res.rows;
+			for (let i = 0; i < rw.length; i++){
+				jsResponse.push(rw[i].column_name);
+			}
+
+			for(let i = 0; i < key.length; i++){
+				console.log('test');
+				if(r[key[i]] == 'on'){
+						qry += key[i] + ' '
+						if(r[key[i+1]] == 'on'){
+							qry += ', '
+						}
+				}
+			}
+			qry += 'from ' + req.query.tabla;
+			client.query(qry, (err, res) => {
+				if (err){
+					resp.send('ERROR, QUERY')
+				} else {
+					resp.render('showVendedor', { atributos: jsResponse, elementos: res.rows, tabla: req.query.tabla});
+				}
+			});
+
 		}
-		if (r.nombre == 'on'){
-		  qry += 'nombre '
-		  if(r.apellido == 'on' | r.f_nacimiento == 'on'){
-		    qry += ', '
-		  }
-		}
-		if (r.apellido == 'on'){
-		  qry += 'apellido '
-		  if(r.f_nacimiento == 'on'){
-		    qry += ', '
-		  }
-		}
-		if (r.f_nacimiento == 'on'){
-		  qry += 'f_nacimiento '
-		}
-	}
-	catch(err){
-		console.log("nope");
-	}
 
-	qry += 'from Vendedor'
-
-	console.log(qry);
-
-	//console.log(key);
-	//console.log(r.nombre);
-/*
-	let query = 'SELECT '
-	if (key == 'on') {
-		query += 'vendedorid '
-	}
-	console.log(query);
-
-	*/
-
-	console.log(r);
-  //var query = 'SELECT * from Vendedor';
-  let jsResponse = [];
-  client.query(qry, (err, res) => {
-  if (err) {
-    console.log(err.stack)
-  } else {
-    jsResponse = res.rows;
-    console.log(jsResponse);
-    resp.render('showVendedor', {elementos : jsResponse});
-  }
 })
-
-
 
   //__dirname : It will resolve to your project folder.
 })
 
-app.get('/showVendedorperName',function(req, resp, next){
-  var query = 'SELECT * from Vendedor ORDER BY nombre DESC';
-  let jsResponse = [];
-  client.query(query, (err, res) => {
-  if (err) {
-    console.log(err.stack)
-  } else {
-    jsResponse = res.rows;
-    console.log(jsResponse);
-    resp.render('showVendedor', {elementos : jsResponse});
-  }
-})
-
-
-
-  //__dirname : It will resolve to your project folder.
-})
 
 
 

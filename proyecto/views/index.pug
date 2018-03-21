@@ -17,4 +17,6 @@ body
 		input(type="hidden", name="tabla", value='vendedor')
 		input(type="submit", value="Ingresar vendedor")
 	br
-	a(href='/showVendedor') Mostrar
+	form(action="/showVendedor", method="get")
+		input(type="hidden", name="tabla", value="vendedor")
+		input(type="submit", value="Mostrar vendedores")
