@@ -11,8 +11,8 @@ let users = require('./routes/users');
 let request = require('./routes/request');
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-//let conString = "postgres://postgres:admin@localhost:5432/turismo";
+//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 var client = new pg.Client(conString);
 client.connect();
@@ -144,6 +144,70 @@ app.get('/eliminarVendedor', function(req, resp, next) {
 
 
 app.get('/showVendedor',function(req, resp, next){
+	let r = req.query
+	let key = Object.keys(r)[0];
+	let qry = 'SELECT '
+	//let key = Object.keys(obj);
+	//console.log(key[0]);
+/*
+	try {
+		let key = Object.keys(obj);
+	}
+	catch(err){
+		console.log("Es nulo");
+	}
+	*/
+/*
+	try {
+		console.log(key[0]);
+	}
+	catch(err){
+		console.log("es la implementacion base");
+	}
+*/
+
+	try{
+		if (r.id == 'on') {
+			qry += 'vendedorid '
+			if(r.nombre == 'on'| r.apellido == 'on'| r.f_nacimiento == 'on'){
+		    qry += ', '
+		  }
+		}
+		if (r.nombre == 'on'){
+		  qry += 'nombre '
+		  if(r.apellido == 'on' | r.f_nacimiento == 'on'){
+		    qry += ', '
+		  }
+		}
+		if (r.apellido == 'on'){
+		  qry += 'apellido '
+		  if(r.f_nacimiento == 'on'){
+		    qry += ', '
+		  }
+		}
+		if (r.f_nacimiento == 'on'){
+		  qry += 'f_nacimiento '
+		}
+	}
+	catch(err){
+		console.log("nope");
+	}
+
+	qry += 'from Vendedor ORDER BY DESC'
+
+	console.log(qry);
+	//console.log(key);
+	//console.log(r.nombre);
+/*
+	let query = 'SELECT '
+	if (key == 'on') {
+		query += 'vendedorid '
+	}
+	console.log(query);
+
+	*/
+
+	console.log(r);
   var query = 'SELECT * from Vendedor';
   let jsResponse = [];
   client.query(query, (err, res) => {
