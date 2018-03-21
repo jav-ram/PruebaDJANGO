@@ -6,6 +6,13 @@ html
 
 p Ordenar Informacion de la Base de datos
 	li
+		form(action="/showVendedor", method="get")
+			input(type="checkbox", name="id")
+			input(type="checkbox", name="nombre")
+			input(type="checkbox", name="apellido")
+			input(type="checkbox", name="f_nacimiento")
+			input(type="submit", value="Filtrar")
+			
 		a(href='/showVendedorperName') Ordenar por Nombre
 
 		table(border = '1')
