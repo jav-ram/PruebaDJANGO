@@ -11,10 +11,10 @@ let users = require('./routes/users');
 let request = require('./routes/request');
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-let conString = "postgres://postgres:admin@localhost:5432/turismo";
+let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+//let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
-var client = new pg.Client(conString);
+client = new pg.Client(conString);
 client.connect();
 
 let app = express();
@@ -76,21 +76,7 @@ app.get('/datoIngresadoVendedor', function(req, resp, next) {
 	query = query.slice(0, -1);	//Borramos la ultima coma
 	query += ");"
 	console.log(query);
-	/*
-	console.log(req.query);
-	atributos.push(req.query.vendedorid);
-	atributos.push(req.query.nombre);
-	atributos.push(req.query.apellido);
-	atributos.push(req.query.f_nacimiento);
-	console.log(atributos);
-	*/
 	let jsResponse = [];
-	let a = '';
-	/*let q = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento)";
-	q += " VALUES ('" + atributos[0] + "','" + atributos[1] + "','" + atributos[2] + "','" + atributos[3] +"'";
-	q += ");";*/
-	//let p = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento) VALUES (3, 'Gabriel', 'Gonzales', '1998-09-08')";
-	//console.log(q, p);
 	client.query(query, (err, res) => {
 		if (err) {
 			console.log(err.stack);
@@ -99,7 +85,6 @@ app.get('/datoIngresadoVendedor', function(req, resp, next) {
 			jsResponse = res.rows;
 			console.log(jsResponse[0]);
 			resp.send('Si se pudo!');
-			//resp.render('vendedorInsert', { elementos: jsResponse[0]});
 		}
 	});
 
@@ -110,11 +95,12 @@ app.get('/datoIngresadoVendedor', function(req, resp, next) {
 //Eliminar
 app.get('/eliminarVendedor', function(req, resp, next) {
 	let obj = req.query;
+	let tabla = req.query.tabla;
 	let key = Object.keys(obj)[0];
-	console.log(key);
+	console.log(key , tabla);
 
-  let q = "DELETE FROM Vendedor WHERE "+key+" =" + obj.vendedorid;
-
+  let q = "DELETE FROM "+ tabla +" WHERE "+key+" =" + obj[key];
+	console.log(q);
   //let p = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento) VALUES (3, 'Gabriel', 'Gonzales', '1998-09-08')";
   //console.log(q, p);
 
@@ -130,7 +116,35 @@ app.get('/eliminarVendedor', function(req, resp, next) {
 
 });
 
+//Insert de Vendedor
+app.get('/actualizado', function(req, resp, next) {
+	let response = ''+req;
+	let param = req.query;
+	let columns = Object.keys(req.query);
+	let query = "UPDATE " + param.tabla + " SET ";
+	//Para no agarrar el nombre de la tabla como atributo
+	for (let i  = 0; i < columns.length - 1; i++){
+		query += columns[i] + "= '" + param[columns[i]] +"',";
+	}
+	query = query.slice(0, -1);	//Borramos la ultima coma
 
+	query += " WHERE " + columns[0] + "=" +param[columns[0]] +";";
+
+	console.log(query);
+
+	let jsResponse = [];
+	client.query(query, (err, res) => {
+		if (err) {
+			console.log(err.stack);
+			resp.send('ERROR, QUERY')
+		} else {
+			jsResponse = res.rows;
+			console.log(jsResponse[0]);
+			resp.send('Si se pudo!');
+		}
+	});
+
+});
 
 app.get('/showVendedor',function(req, resp, next){
 	let r = req.query
