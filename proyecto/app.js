@@ -193,9 +193,10 @@ app.get('/showVendedor',function(req, resp, next){
 		console.log("nope");
 	}
 
-	qry += 'from Vendedor ORDER BY DESC'
+	qry += 'from Vendedor'
 
 	console.log(qry);
+
 	//console.log(key);
 	//console.log(r.nombre);
 /*
@@ -208,9 +209,9 @@ app.get('/showVendedor',function(req, resp, next){
 	*/
 
 	console.log(r);
-  var query = 'SELECT * from Vendedor';
+  //var query = 'SELECT * from Vendedor';
   let jsResponse = [];
-  client.query(query, (err, res) => {
+  client.query(qry, (err, res) => {
   if (err) {
     console.log(err.stack)
   } else {
