@@ -37,9 +37,25 @@ app.use('/users', users);
 
 // GET response page from query
 app.get('/vendedorInsert', function(req, resp, next) {
-	let response = 'SELECT * FROM Vendedor LIMIT 1';
+	//let response = 'SELECT * FROM Vendedor LIMIT 1';
+	let response = "select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + req.query.tabla + "';";
 	let jsResponse = [];
 	let a = '';
+	client.query(response, (err, res) => {
+		if (err) {
+			console.log(err.stack);
+			resp.send('ERROR, QUERY')
+		} else {
+			let rw = res.rows;
+			for (let i = 0; i < rw.length; i++){
+				jsResponse.push(rw[i].column_name);
+			}
+
+			console.log(jsResponse, rw.length);
+			resp.render('vendedorInsert', { elementos: jsResponse, tabla: req.query.tabla});
+		}
+	})
+	/*
 	client.query(response, (err, res) => {
 		if (err) {
 			console.log(err.stack);
@@ -49,29 +65,44 @@ app.get('/vendedorInsert', function(req, resp, next) {
 			console.log(jsResponse[0]);
 			resp.render('vendedorInsert', { elementos: jsResponse});
 		}
-	});
+	});*/
 
 });
 
 //Insert de Vendedor
 app.get('/datoIngresadoVendedor', function(req, resp, next) {
 	let response = ''+req;
-
-	let atributos = [];
+	let param = req.query;
+	let columns = Object.keys(req.query);
+	let query = "INSERT INTO " + param.tabla + "(";
+	//Para no agarrar el nombre de la tabla como atributo
+	for (let i  = 0; i < columns.length - 1; i++){
+		query += columns[i] +",";
+	}
+	query = query.slice(0, -1);	//Borramos la ultima coma
+	query += ") VALUES ("
+	for (let i  = 0; i < columns.length - 1; i++){
+		query += "'" + param[columns[i]] + "'" +",";
+	}
+	query = query.slice(0, -1);	//Borramos la ultima coma
+	query += ");"
+	console.log(query);
+	/*
+	console.log(req.query);
 	atributos.push(req.query.vendedorid);
 	atributos.push(req.query.nombre);
 	atributos.push(req.query.apellido);
 	atributos.push(req.query.f_nacimiento);
 	console.log(atributos);
-
+	*/
 	let jsResponse = [];
 	let a = '';
-	let q = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento)";
+	/*let q = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento)";
 	q += " VALUES ('" + atributos[0] + "','" + atributos[1] + "','" + atributos[2] + "','" + atributos[3] +"'";
-	q += ");";
+	q += ");";*/
 	//let p = "INSERT INTO Vendedor (vendedorid, nombre, apellido, f_nacimiento) VALUES (3, 'Gabriel', 'Gonzales', '1998-09-08')";
 	//console.log(q, p);
-	client.query(q, (err, res) => {
+	client.query(query, (err, res) => {
 		if (err) {
 			console.log(err.stack);
 			resp.send('ERROR, QUERY')

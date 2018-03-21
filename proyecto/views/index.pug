@@ -13,6 +13,8 @@ head
 	title Inicio
 body
 	h1 Vendedor
-	a(href='/vendedorInsert') Insertar
+	form(action="/vendedorInsert", method="get")
+		input(type="hidden", name="tabla", value='vendedor')
+		input(type="submit", value="Ingresar vendedor")
 	br
 	a(href='/showVendedor') Mostrar

@@ -4,7 +4,7 @@ html
 		title Homepage
 	body
 		form(action="/datoIngresadoVendedor", method="get")
-			each tupla in elementos
-				each elemento, nombre in tupla
-					input(id=nombre, type="text", name=nombre, placeholder=nombre)
+			each elemento in elementos
+				input(id=elemento, type="text", name=elemento, placeholder=elemento)
+			input(type="hidden", name="tabla", value=tabla)
 			input(type="submit")
