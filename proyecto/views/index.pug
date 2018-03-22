@@ -24,3 +24,48 @@ html
 			form(action="/showVendedor", method="get")
 				input(type="hidden", name="tabla", value="vendedor")
 				input#tabla(type="submit", value="Mostrar vendedores")
+		div#contenedor
+			h1 Cliente
+			form(action="/vendedorInsert", method="get")
+				input(type="hidden", name="tabla", value='cliente')
+				input#tabla(type="submit", value="Ingresar cliente")
+			br
+			form(action="/showVendedor", method="get")
+				input(type="hidden", name="tabla", value="cliente")
+				input#tabla(type="submit", value="Mostrar clientes")
+		div#contenedor
+			h1 Vuelos
+			form(action="/vendedorInsert", method="get")
+				input(type="hidden", name="tabla", value='vuelo')
+				input#tabla(type="submit", value="Ingresar vuelo")
+			br
+			form(action="/showVendedor", method="get")
+				input(type="hidden", name="tabla", value="vuelo")
+				input#tabla(type="submit", value="Mostrar vuelos")
+		div#contenedor
+			h1 Paquete
+				form(action="/vendedorInsert", method="get")
+					input(type="hidden", name="tabla", value='paquete')
+					input#tabla(type="submit", value="Ingresar paquete")
+				br
+				form(action="/showVendedor", method="get")
+					input(type="hidden", name="tabla", value="paquete")
+					input#tabla(type="submit", value="Mostrar paquetes")
+		div#contenedor
+			h1 Venta
+			form(action="/vendedorInsert", method="get")
+				input(type="hidden", name="tabla", value='venta')
+				input#tabla(type="submit", value="Ingresar venta")
+			br
+			form(action="/showVendedor", method="get")
+				input(type="hidden", name="tabla", value="venta")
+				input#tabla(type="submit", value="Mostrar ventas")
+		div#contenedor
+			h1 Extras
+			form(action="/vendedorInsert", method="get")
+				input(type="hidden", name="tabla", value='extras')
+				input#tabla(type="submit", value="Ingresar extras")
+			br
+			form(action="/showVendedor", method="get")
+				input(type="hidden", name="tabla", value="extras")
+				input#tabla(type="submit", value="Mostrar extras")

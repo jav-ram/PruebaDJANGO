@@ -106,3 +106,4 @@ app.get('/vendedorInsert', function(req, resp, next) {
 	catch(err){
 		console.log("nope");
 	}
+  h1 Cliente form(action="/vendedorInsert", method="get") input(type="hidden", name="tabla", value='cliente') input#tabla(type="submit", value="Ingresar cliente") br form(action="/showVendedor", method="get") input(type="hidden", name="tabla", value="cliente") input#tabla(type="submit", value="Mostrar clientes") h1 Vuelo form(action="/vendedorInsert", method="get") input(type="hidden", name="tabla", value='vuelo') input#tabla(type="submit", value="Ingresar vuelo") br form(action="/showVendedor", method="get") input(type="hidden", name="tabla", value="vuelo") input#tabla(type="submit", value="Mostrar vuelos")
