@@ -9,14 +9,18 @@
 
 doctype html
 html
-head
-	title Inicio
-body
-	h1 Vendedor
-	form(action="/vendedorInsert", method="get")
-		input(type="hidden", name="tabla", value='vendedor')
-		input(type="submit", value="Ingresar vendedor")
-	br
-	form(action="/showVendedor", method="get")
-		input(type="hidden", name="tabla", value="vendedor")
-		input(type="submit", value="Mostrar vendedores")
+	head
+		title Inicio
+		style
+			include style/style.css
+		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
+	body
+		div#contenedor
+			h1 Vendedor
+			form(action="/vendedorInsert", method="get")
+				input(type="hidden", name="tabla", value='vendedor')
+				input#tabla(type="submit", value="Ingresar vendedor")
+			br
+			form(action="/showVendedor", method="get")
+				input(type="hidden", name="tabla", value="vendedor")
+				input#tabla(type="submit", value="Mostrar vendedores")
