@@ -11,8 +11,8 @@ let users = require('./routes/users');
 let request = require('./routes/request');
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-//let conString = "postgres://postgres:admin@localhost:5432/turismo";
+//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -166,9 +166,20 @@ app.get('/showVendedor',function(req, resp, next){
 			for (let i = 0; i < rw.length; i++){
 				jsResponse.push(rw[i].column_name);
 			}
+/*
+			if (r[key[0]] == ''){
+				qry += '* '
+			}
+*/
+
+			if(key.length == 1){
+				if(r[0] == undefined){
+					qry += '* '
+				}
+			}
 
 			for(let i = 0; i < key.length; i++){
-				console.log('test');
+				//console.log('test');
 				if(r[key[i]] == 'on'){
 						qry += key[i] + ' '
 						if(r[key[i+1]] == 'on'){
@@ -177,6 +188,7 @@ app.get('/showVendedor',function(req, resp, next){
 				}
 			}
 			qry += 'from ' + req.query.tabla;
+			console.log(qry);
 			client.query(qry, (err, res) => {
 				if (err){
 					resp.send('ERROR, QUERY')
