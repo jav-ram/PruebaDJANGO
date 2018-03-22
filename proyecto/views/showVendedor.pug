@@ -2,29 +2,33 @@ doctype html
 html
 	head
 		title Homepage
+		style
+			include style/show.css
+		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
 	body
 
-p Ordenar Informacion de la Base de datos
-form(action="/showVendedor", method="get")
-	each atributo in atributos
-		div #{atributo}
-			input(type="checkbox", name=atributo)
-	input(type="hidden", name="tabla", value=tabla)
-	input(type="submit", value="Filtrar")
+	div#contenedor
+		h1 Mostrar
+		form(action="/showVendedor", method="get")
+			each atributo in atributos
+				div #{atributo}
+					input(type="checkbox", name=atributo)
+			input(type="hidden", name="tabla", value=tabla)
+			input(type="submit", value="Filtrar")
 
-table(border = '1')
-	each tupla in elementos
-		tr
-			form(action="/actualizado", method="get")
-				each elemento, nombre in tupla
-					td 
-						input(type="text", name=nombre, placeholder=nombre, value=elemento)
-				td
-					input(type="hidden", name="tabla", value=tabla)
-					input(type="submit", value="Update")
-			td
-				//Delete
-				form(action="/eliminarVendedor", method="get")
-					input(type="hidden", name=Object.keys(tupla)[0], value=tupla[Object.keys(tupla)[0]])
-					input(type="hidden", name="tabla", value=tabla)
-					input(type="submit", value="Delete")
+		table(border = '1')
+			each tupla in elementos
+				tr
+					form(action="/actualizado", method="get")
+						each elemento, nombre in tupla
+							td 
+								input(type="text", name=nombre, placeholder=nombre, value=elemento)
+						td
+							input(type="hidden", name="tabla", value=tabla)
+							input#update(class="button", type="submit", value="Update")
+					td
+						//Delete
+						form(action="/eliminarVendedor", method="get")
+							input(type="hidden", name=Object.keys(tupla)[0], value=tupla[Object.keys(tupla)[0]])
+							input(type="hidden", name="tabla", value=tabla)
+							input#delete(class="button", type="submit", value="Delete")
