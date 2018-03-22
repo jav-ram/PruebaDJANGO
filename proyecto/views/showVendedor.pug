@@ -11,18 +11,18 @@ html
 		h1 Mostrar
 		form(action="/showVendedor", method="get")
 			each atributo in atributos
-				div #{atributo}
-					input(type="checkbox", name=atributo)
+				label(for=atributo) #{atributo}
+				input(id=atributo, type="checkbox", name=atributo)
 			input(type="hidden", name="tabla", value=tabla)
-			input(type="submit", value="Filtrar")
+			input#filtrar(class="button", type="submit", value="Filtrar")
 
-		table(border = '1')
+		table
 			each tupla in elementos
 				tr
 					form(action="/actualizado", method="get")
 						each elemento, nombre in tupla
 							td 
-								input(type="text", name=nombre, placeholder=nombre, value=elemento)
+								input#data(type="text", name=nombre, placeholder=nombre, value=elemento)
 						td
 							input(type="hidden", name="tabla", value=tabla)
 							input#update(class="button", type="submit", value="Update")

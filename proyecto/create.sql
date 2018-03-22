@@ -17,7 +17,7 @@ create table Cliente(
 	estado_civil varchar(10),
 	telefono integer,
 	correo_electronico varchar(30),
-	foto varchar[100],
+	foto varchar(100),
 	PRIMARY KEY (clienteId)
 );
 
