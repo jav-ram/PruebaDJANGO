@@ -209,10 +209,15 @@ app.get('/showVendedor',function(req, resp, next){
 app.get('/buscarPor',function(req, resp, next){
 	let r = req.query
 	let key = Object.keys(r);
-	let qry = 'SELECT '
+	let qry = 'SELECT * FROM ' + req.query.tabla;
+
+	if(key.length == 1){
+		if(r[0] == undefined){
+		//	qry += ' WHERE '
+		}
+	}
 
 	///inicia
-
 
 	let response = "select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + req.query.tabla + "';";
 	let jsResponse = [];
@@ -226,12 +231,20 @@ app.get('/buscarPor',function(req, resp, next){
 			for (let i = 0; i < rw.length; i++){
 				jsResponse.push(rw[i].column_name);
 			}
+
+	for (let i  = 0; i < key.length - 1; i++){
+	qry += key[i] + "= '" + r[key[i]] +" AND ";
+	}
+	//qry = qry.slice(0, -1);	//Borramos la ultima coma
+
+	qry += ";";
+
 /*
 			if (r[key[0]] == ''){
 				qry += '* '
 			}
 */
-
+			/*
 			if(key.length == 1){
 				if(r[0] == undefined){
 					qry += '* '
@@ -247,7 +260,9 @@ app.get('/buscarPor',function(req, resp, next){
 						}
 				}
 			}
-			qry += 'from ' + req.query.tabla;
+			*/
+		//	qry += 'from ' + req.query.tabla;
+
 			console.log(qry);
 			client.query(qry, (err, res) => {
 				if (err){
