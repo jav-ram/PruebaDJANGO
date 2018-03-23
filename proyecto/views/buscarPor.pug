@@ -1,0 +1,25 @@
+doctype html
+html
+	head
+		title Homepage
+		style
+			include style/show.css
+		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
+	body
+
+	div#contenedor
+		h1 Busqueda
+		form(action="/showVendedor", method="get")
+			each atributo in atributos
+				label(for=atributo) #{atributo}
+				input(id=atributo, type="checkbox", name=atributo)
+			input(type="hidden", name="tabla", value=tabla)
+			input#filtrar(class="button", type="submit", value="Filtrar")
+
+		table
+			each tupla in elementos
+				tr
+					form(action="/actualizado", method="get")
+						each elemento, nombre in tupla
+							td
+								input#data(type="text", name=nombre, placeholder=nombre, value=elemento)
