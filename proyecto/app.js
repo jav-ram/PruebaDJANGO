@@ -131,6 +131,7 @@ app.get('/actualizado', function(req, resp, next) {
 	query += " WHERE " + columns[0] + "=" +param[columns[0]] +";";
 
 	console.log(query);
+	console.log('aca es donde se hace el update');
 
 	let jsResponse = [];
 	client.query(query, (err, res) => {
