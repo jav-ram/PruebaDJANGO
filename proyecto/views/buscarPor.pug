@@ -9,7 +9,7 @@ html
 
 	div#contenedor
 		h1 Busqueda
-		form(action="/showVendedor", method="get")
+		form(action="/buscarPor", method="get")
 			each atributo in atributos
 				label(for=atributo) #{atributo}
 				input(id=atributo, type="checkbox", name=atributo)
@@ -19,7 +19,10 @@ html
 		table
 			each tupla in elementos
 				tr
-					form(action="/actualizado", method="get")
+					form(action="/buscarPor", method="get")
 						each elemento, nombre in tupla
 							td
-								input#data(type="text", name=nombre, placeholder=nombre, value=elemento)
+								input#data(type="text", name=nombre, placeholder=null, value=null)
+						td
+							input(type="hidden", name="tabla", value=tabla)
+							input#update(class="button", type="submit", value="Buscar")
