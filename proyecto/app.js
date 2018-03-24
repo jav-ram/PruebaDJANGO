@@ -10,9 +10,20 @@ let index = require('./routes/index');
 let users = require('./routes/users');
 let request = require('./routes/request');
 
+//twitter
+var Twitter = require('twitter');
+
+var clientTwitter = new Twitter({
+  consumer_key: 'wEYoz6JKbWC83vWCSTJESuX6C',
+  consumer_secret: 'flHUeNLL6PaLM8GafLR1ojZEBSxqtV38J60CtxYELfGpBnf1up',
+  access_token_key: '976998317866528768-sDo0SrFxvGfADJ6rvWeH6hLgs7mgsAQ',
+  access_token_secret: 'CE6M1cwwGTEXqT3BztIjfuTYDfUhW3ZkebFbTW1kSGJ5b'
+});
+
+
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-let conString = "postgres://postgres:admin@localhost:5432/turismo";
+let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+//let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -34,7 +45,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
-
+app.get('/a', function(req, res, next){
+	var params = {screen_name: 'nodejs'};
+	console.log("asdasd");
+	clientTwitter.get('users/show', params, function(error, tweets, response) {
+	  if (!error) {
+	    console.log(tweets);
+	  }
+	});
+});
 // GET response page from query
 app.get('/vendedorInsert', function(req, resp, next) {
 	//let response = 'SELECT * FROM Vendedor LIMIT 1';
