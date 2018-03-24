@@ -14,6 +14,13 @@ html
 				label(for=atributo) #{atributo}
 				input(id=atributo, type="checkbox", name=atributo)
 			input(type="hidden", name="tabla", value=tabla)
+			br
+			select(name="campo")
+				each atributo in atributos
+					option(value=atributo) #{atributo}
+					
+			input(type="text", name="search" , placeholder="buscar")
+			
 			input#filtrar(class="button", type="submit", value="Filtrar")
 
 		table

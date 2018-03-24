@@ -192,23 +192,39 @@ app.get('/showVendedor',function(req, resp, next){
 			}
 */
 
-			if(key.length == 1){
+			if(key.length == 2){
 				if(r[0] == undefined){
 					qry += '* '
 				}
 			}
-
+      let con = 0;
 			for(let i = 0; i < key.length; i++){
+
 				//console.log('test');
 				if(r[key[i]] == 'on'){
-						qry += key[i] + ' '
-						if(r[key[i+1]] == 'on'){
-							qry += ', '
-						}
+					qry += key[i] + ' '
+					if(r[key[i+1]] == 'on'){
+						qry += ', '
+					}
+          con ++;
 				}
+
+
 			}
+
+      if (con == 0){
+        qry += '* '
+      }
+
 			qry += 'from ' + req.query.tabla;
-			console.log(qry);
+
+      //existe un tipo de busqueda?
+      if ((req.query.campo != undefined) && (req.query.search != undefined)){
+        qry += ' WHERE ' + req.query.campo + " = '" + req.query.search +"';";
+      }
+
+      console.log(qry);
+
 			client.query(qry, (err, res) => {
 				if (err){
 					resp.send('ERROR, QUERY')
