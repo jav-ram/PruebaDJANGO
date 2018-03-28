@@ -9,7 +9,7 @@ html
 
 	div#contenedor
 		h1 Mostrar
-		form(action="/showVendedor", method="get")
+		form(action="/Show", method="get")
 			each atributo in atributos
 				label(for=atributo) #{atributo}
 				input(id=atributo, type="checkbox", name=atributo)
@@ -35,7 +35,7 @@ html
 							input#update(class="button", type="submit", value="Update")
 					td
 						//Delete
-						form(action="/eliminarVendedor", method="get")
+						form(action="/eliminado", method="get")
 							input(type="hidden", name=Object.keys(tupla)[0], value=tupla[Object.keys(tupla)[0]])
 							input(type="hidden", name="tabla", value=tabla)
 							input#delete(class="button", type="submit", value="Delete")

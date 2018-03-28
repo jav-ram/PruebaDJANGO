@@ -37,7 +37,7 @@ create table Extras(
 );
 
 create table Vuelo (
-	vueloID int,
+	vueloId int,
 	origen varchar(25),
 	destino varchar(25),
 	aereolinea varchar(25),
@@ -45,20 +45,22 @@ create table Vuelo (
 	f_salida date,
 	f_arribo date,
 	precio integer,
-	PRIMARY KEY (vueloID)
+	PRIMARY KEY (vueloId)
 );
 
 create table Venta(
 	clienteId integer,
 	vendedorId integer,
+	paqueteId integer,
 	FOREIGN KEY (clienteId) REFERENCES Cliente(clienteId),
-	FOREIGN KEY (vendedorId) REFERENCES Vendedor(vendedorId)
+	FOREIGN KEY (vendedorId) REFERENCES Vendedor(vendedorId),
+	FOREIGN KEY (paqueteId) REFERENCES Paquete(paqueteId)
 );
 
 create table Paquete(
 	precio integer,
-	vueloID integer,
-	paqueteID integer,
-	FOREIGN KEY (vueloID) REFERENCES Vuelo(vueloID),
-	PRIMARY KEY (paqueteID)
+	vueloId integer,
+	paqueteId integer,
+	FOREIGN KEY (vueloId) REFERENCES Vuelo(vueloId),
+	PRIMARY KEY (paqueteId)
 );

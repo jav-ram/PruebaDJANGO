@@ -55,7 +55,7 @@ app.get('/a', function(req, res, next){
 	});
 });
 // GET response page from query
-app.get('/vendedorInsert', function(req, resp, next) {
+app.get('/Insert', function(req, resp, next) {
 	//let response = 'SELECT * FROM Vendedor LIMIT 1';
 	let response = "select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + req.query.tabla + "';";
 	let jsResponse = [];
@@ -112,7 +112,7 @@ app.get('/datoIngresadoVendedor', function(req, resp, next) {
 
 
 //Eliminar
-app.get('/eliminarVendedor', function(req, resp, next) {
+app.get('/eliminado', function(req, resp, next) {
 	let obj = req.query;
 	let tabla = req.query.tabla;
 	let key = Object.keys(obj)[0];
@@ -166,7 +166,7 @@ app.get('/actualizado', function(req, resp, next) {
 
 });
 
-app.get('/showVendedor',function(req, resp, next){
+app.get('/Show',function(req, resp, next){
 	let r = req.query
 	let key = Object.keys(r);
 	let qry = 'SELECT '
@@ -219,7 +219,7 @@ app.get('/showVendedor',function(req, resp, next){
 			qry += 'from ' + req.query.tabla;
 
       //existe un tipo de busqueda?
-      if ((req.query.campo != undefined) && (req.query.search != undefined)){
+      if ((req.query.campo != undefined) && (req.query.search != undefined) && (req.query.search != "")){
         qry += ' WHERE ' + req.query.campo + " = '" + req.query.search +"';";
       }
 
@@ -239,83 +239,6 @@ app.get('/showVendedor',function(req, resp, next){
 
   //__dirname : It will resolve to your project folder.
 })
-
-
-app.get('/buscarPor',function(req, resp, next){
-	let r = req.query
-	let key = Object.keys(r);
-	let qry = 'SELECT * FROM ' + req.query.tabla;
-
-	if(key.length == 1){
-		if(r[0] == undefined){
-		//	qry += ' WHERE '
-		}
-	}
-
-	///inicia
-
-	let response = "select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + req.query.tabla + "';";
-	let jsResponse = [];
-	let a = '';
-	client.query(response, (err, res) => {
-		if (err) {
-			console.log(err.stack);
-			resp.send('ERROR, QUERY')
-		} else {
-			let rw = res.rows;
-			for (let i = 0; i < rw.length; i++){
-				jsResponse.push(rw[i].column_name);
-			}
-
-	for (let i  = 0; i < key.length - 1; i++){
-	qry += key[i] + "= '" + r[key[i]] +" AND ";
-	}
-	//qry = qry.slice(0, -1);	//Borramos la ultima coma
-
-	qry += ";";
-
-/*
-			if (r[key[0]] == ''){
-				qry += '* '
-			}
-*/
-			/*
-			if(key.length == 1){
-				if(r[0] == undefined){
-					qry += '* '
-				}
-			}
-
-			for(let i = 0; i < key.length; i++){
-				//console.log('test');
-				if(r[key[i]] == 'on'){
-						qry += key[i] + ' '
-						if(r[key[i+1]] == 'on'){
-							qry += ', '
-						}
-				}
-			}
-			*/
-		//	qry += 'from ' + req.query.tabla;
-
-			console.log(qry);
-			client.query(qry, (err, res) => {
-				if (err){
-					resp.send('ERROR, QUERY')
-				} else {
-					resp.render('buscarPor', { atributos: jsResponse, elementos: res.rows, tabla: req.query.tabla});
-				}
-			});
-
-		}
-
-})
-
-  //__dirname : It will resolve to your project folder.
-})
-
-
-
 
 
 app.get('/response',function(req,res){
