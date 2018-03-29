@@ -48,6 +48,14 @@ create table Vuelo (
 	PRIMARY KEY (vueloId)
 );
 
+create table Paquete(
+	precio integer,
+	vueloId integer,
+	paqueteId integer,
+	FOREIGN KEY (vueloId) REFERENCES Vuelo(vueloId),
+	PRIMARY KEY (paqueteId)
+);
+
 create table Venta(
 	clienteId integer,
 	vendedorId integer,
@@ -55,12 +63,4 @@ create table Venta(
 	FOREIGN KEY (clienteId) REFERENCES Cliente(clienteId),
 	FOREIGN KEY (vendedorId) REFERENCES Vendedor(vendedorId),
 	FOREIGN KEY (paqueteId) REFERENCES Paquete(paqueteId)
-);
-
-create table Paquete(
-	precio integer,
-	vueloId integer,
-	paqueteId integer,
-	FOREIGN KEY (vueloId) REFERENCES Vuelo(vueloId),
-	PRIMARY KEY (paqueteId)
 );

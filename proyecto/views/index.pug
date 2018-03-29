@@ -43,18 +43,22 @@ html
 			form(action="/Show", method="get")
 				input(type="hidden", name="tabla", value="vuelo")
 				input#tabla(type="submit", value="Mostrar vuelos")
+				
+		//- Esto va tener una direccion especial
 		div#contenedor
 			h1 Paquete
-			form(action="/Insert", method="get")
+			form(action="/InsertPaquete", method="get")
 				input(type="hidden", name="tabla", value='paquete')
 				input#tabla(type="submit", value="Ingresar paquete")
 			br
 			form(action="/Show", method="get")
 				input(type="hidden", name="tabla", value="paquete")
 				input#tabla(type="submit", value="Mostrar paquetes")
+		
+		//- Esto va tener una direccion especial
 		div#contenedor
 			h1 Venta
-			form(action="/Insert", method="get")
+			form(action="/InsertVenta", method="get")
 				input(type="hidden", name="tabla", value='venta')
 				input#tabla(type="submit", value="Ingresar venta")
 			br

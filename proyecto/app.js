@@ -77,6 +77,104 @@ app.get('/Insert', function(req, resp, next) {
 
 });
 
+app.get('/InsertVenta', function(req, resp, next) {
+
+  let cliente, vendedor, paquete;
+  //Necesito 3 queries, el de cliente, vendedor y paquete
+  let q1 = "SELECT clienteId, nombre, apellido FROM cliente;";
+  let q2 = "SELECT vendedorId, nombre, apellido FROM vendedor;";
+  let q3 = "SELECT paqueteId, vueloId, precio FROM paquete;";
+  client.query(q1, (err, res) => {
+    if (err){
+      console.log(err.stack);
+			resp.send('ERROR, QUERY')
+    }else {
+      client.query(q2, (err, re) => {
+        if (err){
+          console.log(err.stack);
+    			resp.send('ERROR, QUERY')
+        }else {
+          client.query(q3, (err, r) => {
+            if (err){
+              console.log(err.stack);
+        			resp.send('ERROR, QUERY')
+            }else {
+              cliente = res.rows;
+              vendedor = re.rows;
+              paquete = r.rows;
+              resp.render('InsertVenta', {clientes: cliente, vendedores: vendedor, paquetes: paquete});
+            }
+          });
+        }
+      });
+    }
+  });
+
+
+
+});
+
+app.get('/ingresadaVenta', function(req, resp, next){
+  let cliente = req.query.clienteId.split(",")[0];
+  let vendedor = req.query.vendedorId.split(",")[0];
+  let paquete = req.query.paqueteId.split(",")[0];
+  let query = "INSERT INTO venta (clienteid, vendedorid, paqueteid) VALUES ('"+ cliente +"', '" + vendedor +"', '"+ paquete +"');";
+  console.log(query);
+  client.query(query, (err, res) => {
+    if(err){
+      console.log(err.stack);
+			resp.send('ERROR, QUERY');
+    } else {
+      resp.send('Si inserto un nuevo dato');
+    }
+  });
+});
+
+
+
+app.get('/InsertPaquete', function(req, resp, next) {
+
+  let vuelo;
+  let atributo = [];
+  //Necesito 3 queries, el de cliente, vendedor y paquete
+  let q1 = "SELECT vueloId, n_avion, origen, destino  FROM vuelo;";
+  atributo.push("precio");
+  atributo.push("vueloId");
+  atributo.push("paqueteId");
+
+  client.query(q1, (err, res) => {
+    if (err){
+      console.log(err.stack);
+			resp.send('ERROR, QUERY')
+    }else {
+      vuelo = res.rows;
+      resp.render('InsertPaquete', {atributos: atributo, vuelos: vuelo});
+    }
+  });
+
+
+
+});
+
+app.get('/ingresadoPaquete', function(req, resp, next){
+  let id = req.query.paqueteId;
+  let precio = req.query.precio;
+  let vuelo = req.query.vueloId.split(",")[0];
+  let query = "INSERT INTO paquete (precio, vueloid, paqueteid) VALUES ('"+ precio +"', '" + vuelo +"', '"+ id +"');";
+  console.log(query);
+  client.query(query, (err, res) => {
+    if(err){
+      console.log(err.stack);
+			resp.send('ERROR, QUERY');
+    } else {
+      resp.send('Si inserto un nuevo dato');
+    }
+  });
+});
+
+
+
+
 //Insert de Vendedor
 app.get('/datoIngresadoVendedor', function(req, resp, next) {
 	let response = ''+req;
