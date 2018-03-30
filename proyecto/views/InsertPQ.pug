@@ -1,0 +1,24 @@
+doctype html
+html
+	head
+		title Homepage
+		style
+			include style/show.css
+		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
+	body
+		form(action="/ingresadaPQ", method="get")
+			//-Paquete
+			select(name="paqueteId")
+				each paquete in paquetes
+					-var option = ""
+					each valor, atributo in paquete
+						-option += valor + ", " 
+					option(name="paqueteId") #{option}
+			//-Extra
+			select(name="extraId")
+				each extra in extras
+					-var option = ""
+					each valor, atributo in extra
+						-option += valor + ", " 
+					option(name="extraId") #{option}
+			input(type="submit")
