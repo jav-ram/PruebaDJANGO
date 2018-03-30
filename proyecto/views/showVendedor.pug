@@ -24,6 +24,9 @@ html
 			input#filtrar(class="button", type="submit", value="Filtrar")
 
 		table
+			tr
+				each atributo in atributos
+					td#title #{atributo}
 			each tupla in elementos
 				tr
 					form(action="/actualizado", method="get")

@@ -83,7 +83,7 @@ app.get('/InsertVenta', function(req, resp, next) {
   //Necesito 3 queries, el de cliente, vendedor y paquete
   let q1 = "SELECT clienteId, nombre, apellido FROM cliente;";
   let q2 = "SELECT vendedorId, nombre, apellido FROM vendedor;";
-  let q3 = "SELECT paqueteId, vueloId FROM paquete;";
+  let q3 = "SELECT p.paqueteId, v.origen, v.destino FROM paquete as p, vuelo as v WHERE p.vueloId = v.vueloId;";
   client.query(q1, (err, res) => {
     if (err){
       console.log(err.stack);
