@@ -12,6 +12,44 @@ let request = require('./routes/request');
 
 //twitter
 var Twitter = require('twitter');
+//mongo
+var mongo = require('mongodb');
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
+
+//crear base de datos con nombre twitter
+/*
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  console.log("Database created!");
+  db.close();
+});
+*/
+
+//crear coleccion usuario en db twitter
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("twitter");
+  dbo.createCollection("usuarios", function(err, res) {
+    if (err) throw err;
+    console.log("Collection created!");
+    db.close();
+  });
+});
+
+//agregar docmentos a colecciones
+/*
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("twitter");
+  var myobj = { name: "Test", address: "Direccion" };
+  dbo.collection("usuarios").insertOne(myobj, function(err, res) {
+    if (err) throw err;
+    console.log("1 document inserted");
+    db.close();
+  });
+});
+*/
 
 var clientTwitter = new Twitter({
   consumer_key: 'wEYoz6JKbWC83vWCSTJESuX6C',
@@ -20,10 +58,13 @@ var clientTwitter = new Twitter({
   access_token_secret: 'CE6M1cwwGTEXqT3BztIjfuTYDfUhW3ZkebFbTW1kSGJ5b'
 });
 
+//uso de streams de: https://github.com/desmondmorris/node-twitter/tree/master/examples
+//iniciar mongod - ingresar documentos en coleccion
+
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-//let conString = "postgres://postgres:admin@localhost:5432/turismo";
+//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
