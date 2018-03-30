@@ -51,6 +51,8 @@ MongoClient.connect(url, function(err, db) {
 });
 */
 
+var router = express.Router();
+
 var clientTwitter = new Twitter({
   consumer_key: 'wEYoz6JKbWC83vWCSTJESuX6C',
   consumer_secret: 'flHUeNLL6PaLM8GafLR1ojZEBSxqtV38J60CtxYELfGpBnf1up',
@@ -59,8 +61,8 @@ var clientTwitter = new Twitter({
 });
 
 //uso de streams de: https://github.com/desmondmorris/node-twitter/tree/master/examples
+//^ no usar streams, queremos lo de cliente no en tiempo real
 //iniciar mongod - ingresar documentos en coleccion
-
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
 //let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
@@ -95,6 +97,24 @@ app.get('/a', function(req, res, next){
 	  }
 	});
 });
+
+//caso de Twitter
+
+app.get('/Twitter', function(req, resp, next) {
+
+  // https://dev.twitter.com/rest/reference/get/statuses/user_timeline
+  clientTwitter.get('statuses/user_timeline', { screen_name: 'nodejs', count: 10 }, function(error, tweets, response) {
+    if (!error) {
+      //res.status(200).render('index', { title: 'Express', tweets: tweets });
+      resp.render('twitterview', {tweets: tweets});
+    }
+    else {
+      //res.status(500).json({ error: error });
+      console.log('no funciona twter');
+    }
+  });
+});
+
 // GET response page from query
 app.get('/Insert', function(req, resp, next) {
 	//let response = 'SELECT * FROM Vendedor LIMIT 1';
