@@ -103,10 +103,15 @@ app.get('/a', function(req, res, next){
 app.get('/Twitter', function(req, resp, next) {
 
   // https://dev.twitter.com/rest/reference/get/statuses/user_timeline
-  clientTwitter.get('statuses/user_timeline', { screen_name: 'nodejs', count: 10 }, function(error, tweets, response) {
+  clientTwitter.get('statuses/user_timeline', { screen_name: 'realdonaldtrump', count: 10 }, function(error, tweets, response) {
     if (!error) {
       //res.status(200).render('index', { title: 'Express', tweets: tweets });
-      resp.render('twitterview', {tweets: tweets});
+      console.log(tweets[0]);
+      //resp.render('twitterview', {tweets: tweets});
+
+//falta introducir los 10 tweets a mongod
+
+
     }
     else {
       //res.status(500).json({ error: error });
