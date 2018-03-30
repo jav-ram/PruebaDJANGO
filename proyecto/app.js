@@ -30,7 +30,7 @@ MongoClient.connect(url, function(err, db) {
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db("twitter");
-  dbo.createCollection("usuarios", function(err, res) {
+  dbo.createCollection("tweets", function(err, res) {
     if (err) throw err;
     console.log("Collection created!");
     db.close();
@@ -99,7 +99,7 @@ app.get('/a', function(req, res, next){
 });
 
 //caso de Twitter
-
+https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline.html
 app.get('/Twitter', function(req, resp, next) {
 
   // https://dev.twitter.com/rest/reference/get/statuses/user_timeline
@@ -107,10 +107,23 @@ app.get('/Twitter', function(req, resp, next) {
     if (!error) {
       //res.status(200).render('index', { title: 'Express', tweets: tweets });
       console.log(tweets[0]);
+      //falta introducir los 10 tweets a mongo
+      for (let i = 0; i < 10; i++){
+
+        MongoClient.connect(url, function(err, db) {
+          if (err) throw err;
+          var dbo = db.db("twitter");
+          var myobj = tweets[i];
+          dbo.collection("tweets").insertOne(myobj, function(err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+            db.close();
+          });
+        });
+
+      }
+
       //resp.render('twitterview', {tweets: tweets});
-
-//falta introducir los 10 tweets a mongod
-
 
     }
     else {
