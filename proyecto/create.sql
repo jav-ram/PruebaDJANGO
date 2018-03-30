@@ -4,11 +4,13 @@ drop table if exists Vendedor;
 drop table if exists Extras;
 drop table if exists Paquete;
 drop table if exists Vuelo;
+drop table if exists PaqueteExtras;
 
 create table Cliente(
 	clienteId integer not null,
 	nombre varchar(15),
 	apellido varchar (15),
+	twitter varchar (20),
 	f_nacimiento date,
 	pasaporte integer,
 	direccion varchar(40),
@@ -31,7 +33,7 @@ create table Vendedor(
 
 create table Extras(
 	extraId integer not null,
-	nombre varchar(15),
+	nombre varchar(50),
 	precio integer,
 	PRIMARY KEY (extraId)
 );
@@ -49,7 +51,6 @@ create table Vuelo (
 );
 
 create table Paquete(
-	precio integer,
 	vueloId integer,
 	paqueteId integer,
 	FOREIGN KEY (vueloId) REFERENCES Vuelo(vueloId),
@@ -63,4 +64,11 @@ create table Venta(
 	FOREIGN KEY (clienteId) REFERENCES Cliente(clienteId),
 	FOREIGN KEY (vendedorId) REFERENCES Vendedor(vendedorId),
 	FOREIGN KEY (paqueteId) REFERENCES Paquete(paqueteId)
+);
+
+create table PaqueteExtras(
+	paqueteId integer,
+	extraId integer,
+	FOREIGN KEY (paqueteId) REFERENCES Paquete(paqueteId),
+	FOREIGN KEY (extraId) REFERENCES Extras(extraId)
 );

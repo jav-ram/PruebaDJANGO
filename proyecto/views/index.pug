@@ -74,3 +74,12 @@ html
 			form(action="/Show", method="get")
 				input(type="hidden", name="tabla", value="extras")
 				input#tabla(type="submit", value="Mostrar extras")
+		div#contenedor
+			h1 PaqueteExtras
+			form(action="/Insert", method="get")
+				input(type="hidden", name="tabla", value='paqueteextras')
+				input#tabla(type="submit", value="Ingresar extras")
+			br
+			form(action="/Show", method="get")
+				input(type="hidden", name="tabla", value="paqueteextras")
+				input#tabla(type="submit", value="Mostrar extras")

@@ -22,8 +22,8 @@ var clientTwitter = new Twitter({
 
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-let conString = "postgres://postgres:admin@localhost:5432/turismo";
+let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+//let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -83,7 +83,7 @@ app.get('/InsertVenta', function(req, resp, next) {
   //Necesito 3 queries, el de cliente, vendedor y paquete
   let q1 = "SELECT clienteId, nombre, apellido FROM cliente;";
   let q2 = "SELECT vendedorId, nombre, apellido FROM vendedor;";
-  let q3 = "SELECT paqueteId, vueloId, precio FROM paquete;";
+  let q3 = "SELECT paqueteId, vueloId FROM paquete;";
   client.query(q1, (err, res) => {
     if (err){
       console.log(err.stack);
@@ -138,7 +138,6 @@ app.get('/InsertPaquete', function(req, resp, next) {
   let atributo = [];
   //Necesito 3 queries, el de cliente, vendedor y paquete
   let q1 = "SELECT vueloId, n_avion, origen, destino  FROM vuelo;";
-  atributo.push("precio");
   atributo.push("vueloId");
   atributo.push("paqueteId");
 
@@ -160,7 +159,7 @@ app.get('/ingresadoPaquete', function(req, resp, next){
   let id = req.query.paqueteId;
   let precio = req.query.precio;
   let vuelo = req.query.vueloId.split(",")[0];
-  let query = "INSERT INTO paquete (precio, vueloid, paqueteid) VALUES ('"+ precio +"', '" + vuelo +"', '"+ id +"');";
+  let query = "INSERT INTO paquete (vueloid, paqueteid) VALUES ('"+ vuelo +"', '"+ id +"');";
   console.log(query);
   client.query(query, (err, res) => {
     if(err){

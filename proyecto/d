@@ -1,0 +1,6 @@
+ clienteid | nombre | apellido | f_nacimiento | pasaporte | direccion |   pais    |   dpi   | estado_civil | telefono | correo_electronico | foto 
+-----------+--------+----------+--------------+-----------+-----------+-----------+---------+--------------+----------+--------------------+------
+         1 | Pablo  | Prado    | 1998-08-28   |       132 | Guatemala | Guatemala |   12345 | casado       |    45315 | asdasd@asdasd.com  | a
+         2 | Juan   | Perez    | 1995-12-14   |       456 | Guatemala | Guatemala | 4321564 | soltero      |   546548 | asdasd@asdasd.com  | a
+(2 rows)
+
