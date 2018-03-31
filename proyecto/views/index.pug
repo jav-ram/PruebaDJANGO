@@ -15,7 +15,13 @@ html
 			include style/style.css
 		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
 	body
+	
+		canvas#myChart(width="400" height="400")
+			
+	
+	
 		a(href="/Twitter") plox
+		a(href="/Graficas") graficas
 		div#contenedor
 			h1 Vendedor
 			form(action="/Insert", method="get")
@@ -84,3 +90,4 @@ html
 			form(action="/Show", method="get")
 				input(type="hidden", name="tabla", value="paqueteextras")
 				input#tabla(type="submit", value="Mostrar extras")
+				

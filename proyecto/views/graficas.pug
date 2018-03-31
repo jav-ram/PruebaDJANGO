@@ -1,0 +1,37 @@
+//-doctype html
+//-html
+//-	head
+//-		title Homepage
+//-	body
+//-		form(action="/request", method="get")
+//-			input(type="submit")
+//-
+
+doctype html
+html
+head
+  title Inicio
+  style
+    include style/style.css
+  link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
+  script(src="/Chart.min.js")
+body
+
+  canvas#venta(width="400" height="400")
+  canvas#paquete(width="400" height="400")
+  canvas#ganancia(width="400" height="400")
+  canvas#extra(width="400" height="400")
+  canvas#cliente(width="400" height="400")
+  script.
+    let v = document.getElementById("venta");
+    let p = document.getElementById("paquete");
+    let e = document.getElementById("extra");
+    let c = document.getElementById("cliente");
+    let venta = #{ventas};
+    let paquete = #{paquetes};
+    let extra = #{extras};
+    let cliente = #{clientes};
+    let ventaGraph = new Chart(v, venta);
+    let paqueteGraph = new Chart(p, paquete);
+    let extraGraph = new Chart(e, extra);
+    let clienteGraph = new Chart(c, cliente);

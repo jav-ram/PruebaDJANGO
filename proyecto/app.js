@@ -18,13 +18,13 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 
 //crear base de datos con nombre twitter
-/*
+
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   console.log("Database created!");
   db.close();
 });
-*/
+
 
 //crear coleccion usuario en db twitter
 MongoClient.connect(url, function(err, db) {
@@ -38,7 +38,7 @@ MongoClient.connect(url, function(err, db) {
 });
 
 //agregar docmentos a colecciones
-/*
+
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db("twitter");
@@ -49,7 +49,7 @@ MongoClient.connect(url, function(err, db) {
     db.close();
   });
 });
-*/
+
 
 var router = express.Router();
 
@@ -65,8 +65,8 @@ var clientTwitter = new Twitter({
 //iniciar mongod - ingresar documentos en coleccion
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-let conString = "postgres://postgres:admin@localhost:5432/turismo";
+let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+//let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -132,6 +132,104 @@ app.get('/Twitter', function(req, resp, next) {
     }
   });
 });
+
+app.get('/Graficas', function(req, resp, next){
+  let venta;
+  let ganancia;
+  let paquete;
+  let extra;
+  let cliente;
+  let data;
+
+  let queryVenta = "SELECT COUNT(v.vendedorId), ve.nombre, ve.apellido, ve.vendedorId FROM vendedor as ve, venta as v WHERE v.vendedorId = ve.vendedorId GROUP BY ve.vendedorId;";
+  let queryGanancia = "SELECT COUNT(v.paqueteId), vu.origen, vu.destino, p.paqueteId FROM venta as v, vuelo as vu, paquete as p WHERE v.paqueteId=p.paqueteId AND p.vueloId = vu.vueloId GROUP BY p.paqueteId, vu.origen, vu.destino;"
+  let queryExtra = "SELECT COUNT(ex.extraId) as count, ex.nombre, ex.precio, (count(ex.extraId)*ex.precio) as total FROM paqueteextras as e, paquete as p, venta as v, extras as ex WHERE v.paqueteId = p.paqueteId AND p.paqueteId = e.paqueteId AND e.extraId = ex.extraId GROUP BY e.extraId, ex.nombre, ex.precio;";
+  let queryCliente = "SELECT COUNT(v.clienteId), c.nombre, c.apellido FROM venta as v, cliente as c WHERE v.clienteId = c.clienteId GROUP BY v.clienteId, c.nombre, c.apellido;";
+  client.query(queryVenta, (err, respu) => {
+    if(err){
+      console.log(err.stack);
+			resp.send('ERROR, QUERY')
+    } else{
+      let data = [];
+      let labels = "[";
+      let label = "# ventas"
+      let respuesta = respu.rows;
+      for (let i = 0; i < respuesta.length; i++){
+        data[i] = respuesta[i].count;
+        labels += "'" + respuesta[i].nombre + ", " + respuesta[i].apellido + "',"
+      }
+      labels = labels.slice(0, -1);
+      labels += "]";
+      venta = createGraphic(data, "", label, labels);
+      //siguiente grafica
+      client.query(queryGanancia, (err, ress) => {
+        if(err){
+          console.log(err.stack);
+    			resp.send('ERROR, QUERY');
+        } else {
+          let data = [];
+          let labels = "[";
+          let label = "# paquetes vendidos"
+          let respuesta = ress.rows;
+          for (let i = 0; i < respuesta.length; i++){
+            data[i] = respuesta[i].count;
+            labels += "' de " + respuesta[i].origen + " a " + respuesta[i].destino + " id: "+ respuesta[i].paqueteid +"',"
+          }
+          labels = labels.slice(0, -1);
+          labels += "]";
+          paquete = createGraphic(data, "", label, labels);
+          //siguiente grafica
+          client.query(queryExtra, (err, res) => {
+            if (err){
+              console.log(err.stack);
+        			resp.send('ERROR, QUERY');
+            } else {
+              let data = [];
+              let labels = "[";
+              let label = "Q: # total vendido por extras"
+              let respuesta = res.rows;
+              for (let i = 0; i < respuesta.length; i++){
+                data[i] = respuesta[i].total;
+                labels += "'" + respuesta[i].nombre + " cant: " + respuesta[i].count + " total: "+ respuesta[i].total +"',"
+              }
+              labels = labels.slice(0, -1);
+              labels += "]";
+              extra = createGraphic(data, "", label, labels);
+              //siguiente grafica
+              client.query(queryCliente, (err, re) => {
+                if (err){
+                  console.log(err.stack);
+            			resp.send('ERROR, QUERY');
+                } else {
+                  let data = [];
+                  let labels = "[";
+                  let label = "Q: # total vendido por extras"
+                  let respuesta = re.rows;
+                  for (let i = 0; i < respuesta.length; i++){
+                    data[i] = respuesta[i].count;
+                    labels += "'" + respuesta[i].nombre + ", " + respuesta[i].apellido +"',"
+                  }
+                  labels = labels.slice(0, -1);
+                  labels += "]";
+                  cliente = createGraphic(data, "", label, labels);
+                  resp.render('graficas', {ventas:  venta, ganancias: ganancia, paquetes: paquete, extras: extra, clientes: cliente});
+                }
+              });
+
+            }
+          });
+
+        }
+      });
+    }
+  });
+
+});
+
+
+function createGraphic(data, color, label, labels) {
+  return "{type: 'pie', data: {datasets:[{data: [" + data + "], backgroundColor:["+ color +"], label:'"+ label +"'}], labels:"+ labels +"}, options: {responsive: false}}";;
+}
 
 // GET response page from query
 app.get('/Insert', function(req, resp, next) {
