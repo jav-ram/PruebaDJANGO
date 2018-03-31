@@ -37,19 +37,6 @@ MongoClient.connect(url, function(err, db) {
   });
 });
 
-//agregar docmentos a colecciones
-
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("twitter");
-  var myobj = { name: "Test", address: "Direccion" };
-  dbo.collection("usuarios").insertOne(myobj, function(err, res) {
-    if (err) throw err;
-    console.log("1 document inserted");
-    db.close();
-  });
-});
-
 
 var router = express.Router();
 
@@ -65,8 +52,8 @@ var clientTwitter = new Twitter({
 //iniciar mongod - ingresar documentos en coleccion
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-//let conString = "postgres://postgres:admin@localhost:5432/turismo";
+//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -99,38 +86,53 @@ app.get('/a', function(req, res, next){
 });
 
 //caso de Twitter
-https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline.html
+//https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline.html
 app.get('/Twitter', function(req, resp, next) {
 
-  // https://dev.twitter.com/rest/reference/get/statuses/user_timeline
-  clientTwitter.get('statuses/user_timeline', { screen_name: 'realdonaldtrump', count: 10 }, function(error, tweets, response) {
-    if (!error) {
-      //res.status(200).render('index', { title: 'Express', tweets: tweets });
-      console.log(tweets[0]);
-      //falta introducir los 10 tweets a mongo
-      for (let i = 0; i < 10; i++){
+    let query = "select twitter from CLIENTE ;";
 
-        MongoClient.connect(url, function(err, db) {
-          if (err) throw err;
-          var dbo = db.db("twitter");
-          var myobj = tweets[i];
-          dbo.collection("tweets").insertOne(myobj, function(err, res) {
-            if (err) throw err;
-            console.log("1 document inserted");
-            db.close();
-          });
+    client.query(query, (err, res) => {
+    if (err) {
+      console.log(err.stack)
+      resp.send('ERROR, QUERY')
+    } else {
+      let respuesta = res.rows;
+      //console.log(respuesta[0].twitter);
+      //console.log(respuesta.length);
+
+      for(let i = 0; i < respuesta.length; i++){
+        // https://dev.twitter.com/rest/reference/get/statuses/user_timeline
+        clientTwitter.get('statuses/user_timeline', { screen_name: respuesta[i].twitter, count: 10 }, function(error, tweets, response) {
+          if (!error) {
+            //res.status(200).render('index', { title: 'Express', tweets: tweets });
+            //console.log(tweets[0]);
+            //falta introducir los 10 tweets a mongo
+            for (let i = 0; i < 10; i++){
+              MongoClient.connect(url, function(err, db) {
+                if (err) throw err;
+                var dbo = db.db("twitter");
+                var myobj = tweets[i];
+                dbo.collection("tweets").insertOne(myobj, function(err, res) {
+                  if (err) throw err;
+                  console.log("1 document inserted");
+                  db.close();
+                });
+              });
+            }
+
+          }
+          else {
+            //res.status(500).json({ error: error });
+            console.log('no funciona twter');
+          }
         });
-
       }
 
-      //resp.render('twitterview', {tweets: tweets});
+    }
+  })
 
-    }
-    else {
-      //res.status(500).json({ error: error });
-      console.log('no funciona twter');
-    }
-  });
+  //falta: levantar un view que haga un query a la db y que para cada user saque los 10 tweets
+
 });
 
 app.get('/Graficas', function(req, resp, next){
