@@ -16,12 +16,21 @@ head
   link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
   script(src="/Chart.min.js")
 body
-
-  canvas#venta(width="400" height="400")
-  canvas#paquete(width="400" height="400")
-  canvas#ganancia(width="400" height="400")
-  canvas#extra(width="400" height="400")
-  canvas#cliente(width="400" height="400")
+  div#contenedor
+    h1 Cantidad de ventas por vendedor
+    canvas#venta(width="400" height="400")
+  div#contenedor
+    h1 Cantidad de paquetes vendidos
+    canvas#paquete(width="400" height="400")
+  div#contenedor
+    h1 Cuanto generaron los vendedores
+    canvas#ganancia(width="400" height="400")
+  div#contenedor
+    h1 Cantidad de extras vendidos
+    canvas#extra(width="400" height="400")
+  div#contenedor
+    h1 Cantidad de paquetes vendidos a clientes
+    canvas#cliente(width="400" height="400")
   script.
     let v = document.getElementById("venta");
     let p = document.getElementById("paquete");

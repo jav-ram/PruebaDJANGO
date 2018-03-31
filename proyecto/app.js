@@ -140,7 +140,7 @@ app.get('/Graficas', function(req, resp, next){
   let extra;
   let cliente;
   let data;
-
+  let colors = ["'rgba(33, 150, 243,1.0)'", "'rgba(255, 87, 34,1.0)'", "'rgba(233, 30, 99,1.0)'", "'rgba(76, 175, 80,1.0)'", "'rgba(244, 67, 54,1.0)'", "'rgba(156, 39, 176,1.0)'", "'rgba(0, 188, 212,1.0)'", "'rgba(158, 158, 158,1.0)'", "'rgba(0, 150, 136,1.0)'"];
   let queryVenta = "SELECT COUNT(v.vendedorId), ve.nombre, ve.apellido, ve.vendedorId FROM vendedor as ve, venta as v WHERE v.vendedorId = ve.vendedorId GROUP BY ve.vendedorId;";
   let queryGanancia = "SELECT COUNT(v.paqueteId), vu.origen, vu.destino, p.paqueteId FROM venta as v, vuelo as vu, paquete as p WHERE v.paqueteId=p.paqueteId AND p.vueloId = vu.vueloId GROUP BY p.paqueteId, vu.origen, vu.destino;"
   let queryExtra = "SELECT COUNT(ex.extraId) as count, ex.nombre, ex.precio, (count(ex.extraId)*ex.precio) as total FROM paqueteextras as e, paquete as p, venta as v, extras as ex WHERE v.paqueteId = p.paqueteId AND p.paqueteId = e.paqueteId AND e.extraId = ex.extraId GROUP BY e.extraId, ex.nombre, ex.precio;";
@@ -160,7 +160,7 @@ app.get('/Graficas', function(req, resp, next){
       }
       labels = labels.slice(0, -1);
       labels += "]";
-      venta = createGraphic(data, "", label, labels);
+      venta = createGraphic(data, colors, label, labels);
       //siguiente grafica
       client.query(queryGanancia, (err, ress) => {
         if(err){
@@ -177,7 +177,7 @@ app.get('/Graficas', function(req, resp, next){
           }
           labels = labels.slice(0, -1);
           labels += "]";
-          paquete = createGraphic(data, "", label, labels);
+          paquete = createGraphic(data, colors, label, labels);
           //siguiente grafica
           client.query(queryExtra, (err, res) => {
             if (err){
@@ -194,7 +194,7 @@ app.get('/Graficas', function(req, resp, next){
               }
               labels = labels.slice(0, -1);
               labels += "]";
-              extra = createGraphic(data, "", label, labels);
+              extra = createGraphic(data, colors, label, labels);
               //siguiente grafica
               client.query(queryCliente, (err, re) => {
                 if (err){
@@ -211,7 +211,7 @@ app.get('/Graficas', function(req, resp, next){
                   }
                   labels = labels.slice(0, -1);
                   labels += "]";
-                  cliente = createGraphic(data, "", label, labels);
+                  cliente = createGraphic(data, colors, label, labels);
                   resp.render('graficas', {ventas:  venta, ganancias: ganancia, paquetes: paquete, extras: extra, clientes: cliente});
                 }
               });
