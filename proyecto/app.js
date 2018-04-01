@@ -135,6 +135,42 @@ app.get('/Twitter', function(req, resp, next) {
 
 });
 
+app.get('/TwitterDisplay', function(req, resp, next) {
+
+    let query = "select twitter from CLIENTE ;";
+
+    client.query(query, (err, res) => {
+    if (err) {
+      console.log(err.stack)
+      resp.send('ERROR, QUERY')
+    } else {
+      let respuesta = res.rows;
+      //console.log(respuesta[0].twitter);
+      //console.log(respuesta.length);
+
+      for(let i = 0; i < respuesta.length; i++){
+
+        MongoClient.connect(url, function(err, db) {
+          if (err) throw err;
+          var dbo = db.db("twitter");
+          var query = {"user.screen_name" : respuesta[i].twitter.substr(1) };
+          dbo.collection("tweets").find(query).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(respuesta[i].twitter);
+            //como chingados parseo esto
+            console.log(result);
+            db.close();
+          });
+        });
+
+      }
+    }
+  })
+
+  //falta: levantar un view que haga un query a la db y que para cada user saque los 10 tweets
+
+});
+
 app.get('/Graficas', function(req, resp, next){
   let venta;
   let ganancia;

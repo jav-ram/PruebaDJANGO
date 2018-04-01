@@ -1,0 +1,19 @@
+doctype html
+html
+	head
+		title User Twitter
+		style
+			include style/show.css
+		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
+	body
+  
+  div#contenedor
+		h1 User Twitter
+    table
+      tr
+        each usuario in usuarios
+          td#title #{usuario}
+      each tweet in tweets
+        tr
+          input#data(type="text", name=tweet, placeholder=tweet, value=tweet)
+          
