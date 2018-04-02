@@ -139,6 +139,9 @@ app.get('/TwitterDisplay', function(req, resp, next) {
 
     let query = "select twitter from CLIENTE ;";
 
+    var twtts = [];
+    var usrs = [];
+
     client.query(query, (err, res) => {
     if (err) {
       console.log(err.stack)
@@ -156,14 +159,31 @@ app.get('/TwitterDisplay', function(req, resp, next) {
           var query = {"user.screen_name" : respuesta[i].twitter.substr(1) };
           dbo.collection("tweets").find(query).toArray(function(err, result) {
             if (err) throw err;
-            console.log(respuesta[i].twitter);
+            //console.log(respuesta[i].twitter);
             //como chingados parseo esto
-            console.log(result);
+            //console.log(result[0].text);
+            //console.log(result[0].user.name);
+
+            for(let j = 0; j < 10; j++){
+
+              twtts.push(result[j].text);
+              //console.log(twtts[j]);
+              usrs.push(result[j].user.name);
+              //console.log(usrs[j]);
+
+            }
+
             db.close();
           });
         });
 
+        //render the view
+        //console.log('hola');
+        console.log(twtts[0];
+        console.log(usrs[0]);
+
       }
+      resp.render('twuser', { tweets: twtts, users: usrs});
     }
   })
 
