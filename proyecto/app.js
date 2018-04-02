@@ -135,6 +135,8 @@ app.get('/Twitter', function(req, resp, next) {
 
 });
 
+
+
 app.get('/TwitterDisplay', function(req, resp, next) {
 
     let query = "select twitter from CLIENTE ;";
@@ -174,16 +176,19 @@ app.get('/TwitterDisplay', function(req, resp, next) {
             }
 
             db.close();
+            //console.log(twtts);
+            //console.log(usrs);
+            resp.render('twuser', { tweets: twtts, users: usrs});
           });
+
         });
 
         //render the view
         //console.log('hola');
-        console.log(twtts[0];
-        console.log(usrs[0]);
+
 
       }
-      resp.render('twuser', { tweets: twtts, users: usrs});
+
     }
   })
 
