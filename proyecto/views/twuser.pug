@@ -6,9 +6,12 @@ html
 			include style/show.css
 		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
 	body
+		form(action="/Twitter", method="get")
+			input#tabla(type="submit", value="Actualizar")
 		div#contenedor
 			h1 User Twitter
 			each tweet in tweets
 				input#data(type="text", name=tweet, placeholder=tweet, value=tweet)
+			
 	          
           

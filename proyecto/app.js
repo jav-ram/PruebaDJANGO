@@ -91,6 +91,20 @@ app.get('/Twitter', function(req, resp, next) {
 
     let query = "select twitter from CLIENTE ;";
 
+    //botar la coleccion para que siempre esten los mas frescos
+
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("twitter");
+      dbo.collection("tweets").drop(function(err, delOK) {
+        if (err) throw err;
+        if (delOK) console.log("Collection deleted");
+        db.close();
+      });
+    });
+
+    //ingresar la info de twitter para que siempre este lo mas nuevo
+
     client.query(query, (err, res) => {
     if (err) {
       console.log(err.stack)
