@@ -8,9 +8,10 @@ head
 body
 
     div#contenedor
+      h1 Usuarios Disponibles
       each user in users
         -var nombre = ""
-        form(action="/TwitterDisplay", method="get")
+        form(action="/TweetsPerUser", method="get")
           each valor, atributo in user
             input(type="hidden",id=atributo name=atributo, value=valor)
             -nombre += valor + ","

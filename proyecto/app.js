@@ -52,8 +52,8 @@ var clientTwitter = new Twitter({
 //iniciar mongod - ingresar documentos en coleccion
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-//let conString = "postgres://postgres:admin@localhost:5432/turismo";
+//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -235,11 +235,13 @@ app.get('/TweetsPerUser', function(req, resp, next) {
         if (err) throw err;
         var dbo = db.db("twitter");
         //LE QUITO LA @
-        var query = {"user.screen_name" : req.user.substr(1) };
-        dbo.collection("tweets").find(query).limit(25).sort( { "created_at" : 1 } ).toArray(function(err, result) {
+        var query = {"user.screen_name" : req.query.twitter.substr(1) };
+        console.log(req.query.twitter);
+        console.log(req.query.twitter.substr(1));
+        dbo.collection("tweets").find(query).limit(10).sort( { "created_at" : 1 } ).toArray(function(err, result) {
           if (err) throw err;
 
-          for(let j = 0; j < 25; j++){
+          for(let j = 0; j < 10; j++){
 
             twtts.push(result[j].text);
 
@@ -248,7 +250,7 @@ app.get('/TweetsPerUser', function(req, resp, next) {
           db.close();
 
           //EL ARRAY FINAL CON TODOS LOS TWEETS POR USER -> twtts
-
+          resp.render('twuser', { tweets: twtts });
         });
 
       });

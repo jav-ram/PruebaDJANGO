@@ -11,16 +11,16 @@ INSERT INTO vendedor VALUES('8','Jose',       'Vera',     '1984-11-21');
 INSERT INTO vendedor VALUES('9','Juan',       'Lima',     '1985-09-30');
 
 --CLIENTES
-INSERT INTO cliente VALUES('0', 'Andres',     'Barrera',  '@nodejs',  '1989-04-01', '716753249', 'Guatemala', 'Guatemala', '714959250', 'Casado',   '88071821', 'anba@g.com', 'NULL');
-INSERT INTO cliente VALUES('1', 'Francisco',  'Saenz',    '@nodejs',  '1977-03-06', '767572833', 'Mixco',     'Guatemala', '778892861', '',         '61519601', 'frsa@g.com', 'NULL');
-INSERT INTO cliente VALUES('2', 'Maria',      'Gonzales', '@nodejs',  '1976-11-25', '470635737', 'Guatemala', 'Guatemala', '880718221', 'Soltero',  '74959250', 'mago@g.com', 'NULL');
-INSERT INTO cliente VALUES('3', 'Ana',        'Cruz',     '@nodejs',  '1951-07-23', '715345876', 'Zona 16',   'Guatemala', '871134696', 'Casado',   '71495250', 'ancr@g.com', 'NULL');
-INSERT INTO cliente VALUES('4', 'Irene',      'Santos',   '@nodejs',  '1963-02-25', '744177973', 'Mixco',     'Guatemala', '714959250', 'Casado',   '86757332', 'irsa@g.com', 'NULL');
-INSERT INTO cliente VALUES('5', 'Catalina',   'Cabañas',  '@nodejs',  '1972-06-24', '383701396', 'Guatemala', 'Guatemala', '794480437', 'Soltero',  '68893794', 'ctcb@g.com', 'NULL');
-INSERT INTO cliente VALUES('6', 'Juan',       'Maza',     '@nodejs',  '1955-05-19', '161952066', 'Guatemala', 'Guatemala', '688934794', 'Soltero',  '77889286', 'juma@g.com', 'NULL');
-INSERT INTO cliente VALUES('7', 'Victor',     'Zuñiga',   '@nodejs',  '1984-03-06', '481765119', 'Guatemala', 'Guatemala', '745079224', 'Soltero',  '44080999', 'vizu@g.com', 'NULL');
-INSERT INTO cliente VALUES('8', 'Agustin',    'Espada',   '@nodejs',  '1973-06-20', '439703526', 'Zona 16',   'Guatemala', '867570332', 'Casado',   '78892861', 'ages@g.com', 'NULL');
-INSERT INTO cliente VALUES('9', 'Andrea',     'Paredes',  '@nodejs',  '1967-04-14', '433561782', 'Zona 16',   'Guatemala', '404080999', 'Soltero',  '81134696', 'anpa@g.com', 'NULL');
+INSERT INTO cliente VALUES('0', 'Andres',     'Barrera',  '@sitobarrera_',  '1989-04-01', '716753249', 'Guatemala', 'Guatemala', '714959250', 'Casado',   '88071821', 'anba@g.com', 'NULL');
+INSERT INTO cliente VALUES('1', 'Francisco',  'Saenz',    '@Hogwie',  '1977-03-06', '767572833', 'Mixco',     'Guatemala', '778892861', '',         '61519601', 'frsa@g.com', 'NULL');
+INSERT INTO cliente VALUES('2', 'Maria',      'Gonzales', '@Mozzermonkey',  '1976-11-25', '470635737', 'Guatemala', 'Guatemala', '880718221', 'Soltero',  '74959250', 'mago@g.com', 'NULL');
+INSERT INTO cliente VALUES('3', 'Ana',        'Cruz',     '@annacruz_15',  '1951-07-23', '715345876', 'Zona 16',   'Guatemala', '871134696', 'Casado',   '71495250', 'ancr@g.com', 'NULL');
+INSERT INTO cliente VALUES('4', 'Irene',      'Santos',   '@irenesantoss',  '1963-02-25', '744177973', 'Mixco',     'Guatemala', '714959250', 'Casado',   '86757332', 'irsa@g.com', 'NULL');
+INSERT INTO cliente VALUES('5', 'Catalina',   'Cabañas',  '@Catalinacabania',  '1972-06-24', '383701396', 'Guatemala', 'Guatemala', '794480437', 'Soltero',  '68893794', 'ctcb@g.com', 'NULL');
+INSERT INTO cliente VALUES('6', 'Juan',       'Maza',     '@JuanMazaCalleja',  '1955-05-19', '161952066', 'Guatemala', 'Guatemala', '688934794', 'Soltero',  '77889286', 'juma@g.com', 'NULL');
+INSERT INTO cliente VALUES('7', 'Victor',     'Zuñiga',   '@VititoZ',  '1984-03-06', '481765119', 'Guatemala', 'Guatemala', '745079224', 'Soltero',  '44080999', 'vizu@g.com', 'NULL');
+INSERT INTO cliente VALUES('8', 'Agustin',    'Espada',   '@AgustinEspada',  '1973-06-20', '439703526', 'Zona 16',   'Guatemala', '867570332', 'Casado',   '78892861', 'ages@g.com', 'NULL');
+INSERT INTO cliente VALUES('9', 'Andrea',     'Paredes',  '@AndreaMalzia',  '1967-04-14', '433561782', 'Zona 16',   'Guatemala', '404080999', 'Soltero',  '81134696', 'anpa@g.com', 'NULL');
 
 --EXTRAS
 INSERT INTO extras VALUES('0', 'Boleto al circo',                 '350');
