@@ -213,6 +213,35 @@ app.get('/TwitterDisplay', function(req, resp, next) {
 
 });
 
+app.get('/TweetsPerUser', function(req, resp, next) {
+
+    var twtts = [];
+
+      MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("twitter");
+        //LE QUITO LA @
+        var query = {"user.screen_name" : req.user.substr(1) };
+        dbo.collection("tweets").find(query).limit(25).sort( { "created_at" : 1 } ).toArray(function(err, result) {
+          if (err) throw err;
+
+          for(let j = 0; j < 25; j++){
+
+            twtts.push(result[j].text);
+
+          }
+
+          db.close();
+
+          //EL ARRAY FINAL CON TODOS LOS TWEETS POR USER -> twtts
+
+        });
+
+      });
+
+});
+
+
 app.get('/Graficas', function(req, resp, next){
   let venta;
   let ganancia;
