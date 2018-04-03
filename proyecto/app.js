@@ -52,8 +52,8 @@ var clientTwitter = new Twitter({
 //iniciar mongod - ingresar documentos en coleccion
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-let conString = "postgres://postgres:admin@localhost:5432/turismo";
+let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+//let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -83,6 +83,20 @@ app.get('/a', function(req, res, next){
 	    console.log(tweets);
 	  }
 	});
+});
+
+//Mostrar clienes para tweets
+app.get('/showTweets', function(req, resp, next) {
+  let usuarios;
+  let q = "SELECT nombre, apellido, twitter FROM cliente;";
+  client.query(q, (err, respu) => {
+    if (err){
+      console.log(err);
+    } else {
+      usuarios = respu.rows;
+      resp.render('showTweets', {users: usuarios});
+    }
+  });
 });
 
 //caso de Twitter
