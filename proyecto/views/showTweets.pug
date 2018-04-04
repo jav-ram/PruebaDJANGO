@@ -6,7 +6,8 @@ head
     include style/show.css
   link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
 body
-
+  form(action="/Twitter", method="get")
+    input#tabla(type="submit", value="Actualizar")
     div#contenedor
       h1 Usuarios Disponibles
       each user in users
