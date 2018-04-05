@@ -8,12 +8,15 @@ head
 body
   form(action="/Twitter", method="get")
     input#tabla(type="submit", value="Actualizar")
-    div#contenedor
-      h1 Usuarios Disponibles
-      each user in users
-        -var nombre = ""
-        form(action="/TweetsPerUser", method="get")
-          each valor, atributo in user
-            input(type="hidden",id=atributo name=atributo, value=valor)
-            -nombre += valor + ","
-          input(type="submit", value=nombre)
+  div#contenedor
+    h1 Usuarios Disponibles
+    each user in users
+      -var nombre = ""
+      form(action="/TweetsPerUser", method="get")
+        each valor, atributo in user
+          input(type="hidden",id=atributo name=atributo, value=valor)
+          -nombre += valor + ", "
+        -nombre = nombre.slice(0, -1);
+        -nombre = nombre.slice(0, -1);
+        div#space
+        input#account(class="button" type="submit", value=nombre)
