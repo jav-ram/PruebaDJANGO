@@ -97,7 +97,13 @@ input#data{
 	background-size: 1px 6px, 1px 1px, 1px 6px;
 }
 
+#espacio {
+  color: white;
+}
+
 input#account.button{
+  border: 0;
+  margin: auto;
   opacity: 0.5;
   background:white;
   color:black;
@@ -109,6 +115,23 @@ input#account.button{
 
 input#account:hover{
   background: #039be5;
+  color: #fff;
+  box-shadow: 3px 3px 10px #000;
+}
+
+
+input#enviar{
+  opacity: 0.5;
+  background: #039be5;
+  color: white;
+  font-weight: bold;
+  width: 15%;
+  padding: 15 15 15 15;
+  text-align: left;
+}
+
+input#enviar:hover{
+  background: #01579b;
   color: #fff;
   box-shadow: 3px 3px 10px #000;
 }

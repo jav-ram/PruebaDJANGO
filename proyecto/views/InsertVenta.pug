@@ -6,26 +6,32 @@ html
 			include style/show.css
 		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
 	body
-		form(action="/ingresadaVenta", method="get")
-			//-Cliente
-			select(name="clienteId")
-				each cliente in clientes
-					-var option = ""
-					each valor, atributo in cliente
-						-option += valor + ", " 
-					option(name="clienteId") #{option}
-			//-Vendedor
-			select(name="vendedorId")
-				each vendedor in vendedores
-					-var option = ""
-					each valor, atributo in vendedor
-						-option += valor + ", " 
-					option(name="vendedorId") #{option}
-			//-Paquete
-			select(name="paqueteId")
-				each paquete in paquetes
-					-var option = ""
-					each valor, atributo in paquete
-						-option += valor + ", " 
-					option(name="paqueteId") #{option}
-			input(type="submit")
+		div#contenedor
+			h1 Ingrese datos
+			form(action="/ingresadaVenta", method="get")
+				//-Cliente
+				p Cliente
+				select(name="clienteId")
+					each cliente in clientes
+						-var option = ""
+						each valor, atributo in cliente
+							-option += valor + ", " 
+						option(name="clienteId") #{option}
+				//-Vendedor
+				p Vendedor
+				select(name="vendedorId")
+					each vendedor in vendedores
+						-var option = ""
+						each valor, atributo in vendedor
+							-option += valor + ", " 
+						option(name="vendedorId") #{option}
+				//-Paquete
+				p Paquete
+				select(name="paqueteId")
+					each paquete in paquetes
+						-var option = ""
+						each valor, atributo in paquete
+							-option += valor + ", " 
+						option(name="paqueteId") #{option}
+				p#espacio  ""
+				input#enviar(type="submit")

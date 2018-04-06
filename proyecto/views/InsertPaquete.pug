@@ -6,14 +6,20 @@ html
 			include style/show.css
 		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
 	body
-		form(action="/ingresadoPaquete", method="get")
-			input(type="text", name="paqueteId", placeholder="paqueteId")
-			input(type="text", name="precio", placeholder="precio")
-			//-Vuelo
-			select(name="vueloId")
-				each vuelo in vuelos
-					-var option = ""
-					each valor, atributo in vuelo
-						-option += valor + ", " 
-					option(name="vueloId") #{option}
-			input(type="submit")
+		div#contenedor
+			h1 Ingrese datos
+			form(action="/ingresadoPaquete", method="get")
+				p#espacio  ""
+				input(type="text", name="paqueteId", placeholder="paqueteId")
+				p#espacio  ""
+				input(type="text", name="precio", placeholder="precio")
+				//-Vuelo
+				p Vuelo
+				select(name="vueloId")
+					each vuelo in vuelos
+						-var option = ""
+						each valor, atributo in vuelo
+							-option += valor + ", " 
+						option(name="vueloId") #{option}
+				p#espacio ""
+				input#enviar(type="submit")

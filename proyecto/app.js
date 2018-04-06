@@ -18,7 +18,7 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 
 //crear base de datos con nombre twitter
-
+/*
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   console.log("Database created!");
@@ -36,7 +36,7 @@ MongoClient.connect(url, function(err, db) {
     db.close();
   });
 });
-
+*/
 
 var router = express.Router();
 
@@ -298,7 +298,7 @@ app.get('/Graficas', function(req, resp, next){
           let respuesta = ress.rows;
           for (let i = 0; i < respuesta.length; i++){
             data[i] = respuesta[i].count;
-            labels += "' de " + respuesta[i].origen + " a " + respuesta[i].destino + " id: "+ respuesta[i].paqueteid +"',"
+            labels += "'" + respuesta[i].origen + " a " + respuesta[i].destino +"',"
           }
           labels = labels.slice(0, -1);
           labels += "]";
@@ -315,7 +315,7 @@ app.get('/Graficas', function(req, resp, next){
               let respuesta = res.rows;
               for (let i = 0; i < respuesta.length; i++){
                 data[i] = respuesta[i].total;
-                labels += "'" + respuesta[i].nombre + " cant: " + respuesta[i].count + " total: "+ respuesta[i].total +"',"
+                labels += "'" + respuesta[i].nombre + " cant: " + respuesta[i].count + "',"
               }
               labels = labels.slice(0, -1);
               labels += "]";

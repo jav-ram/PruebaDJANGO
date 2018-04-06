@@ -6,8 +6,11 @@ html
 			include style/show.css
 		link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
 	body
-		form(action="/datoIngresadoVendedor", method="get")
-			each elemento in elementos
-				input(id=elemento, type="text", name=elemento, placeholder=elemento)
-			input(type="hidden", name="tabla", value=tabla)
-			input(type="submit")
+		div#contenedor
+			h1 Ingrese datos
+			form(action="/datoIngresadoVendedor", method="get")
+				each elemento in elementos
+					input(id=elemento, type="text", name=elemento, placeholder=elemento)
+					p#espacio  ""
+				input(type="hidden", name="tabla", value=tabla)
+				input#enviar(type="submit")
