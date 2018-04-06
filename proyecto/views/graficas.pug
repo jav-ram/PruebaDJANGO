@@ -21,13 +21,13 @@ body
     canvas#venta(width="400" height="400")    
     p#ventaP
   div#contenedor
-    h1 Cantidad de paquetes vendidos
+    h1 Cantidad de followers de los clientes
     canvas#paquete(width="400" height="400")
     p#paqueteP
   div#contenedor
     h1 Cuanto generaron los vendedores
-    canvas#ganancia(width="400" height="400")
-    p#gananciaP
+    canvas#twitter(width="400" height="400")
+    p#twitterP
   div#contenedor
     h1 Cantidad de extras vendidos
     canvas#extra(width="400" height="400")
@@ -75,6 +75,7 @@ body
     let paqueteGraph = new Chart(p, paquete);
     document.getElementById('paqueteP').innerHTML = paqueteP;
     
+    //Cliente
     let cliente = #{clientes};
     let clienteData = cliente.data.datasets[0].data;
     let clienteLabels = cliente.data.labels;
@@ -84,3 +85,15 @@ body
     }
     let clienteGraph = new Chart(c, cliente);
     document.getElementById('clienteP').innerHTML = clienteP;
+    
+    //twitter
+    let t = document.getElementById("twitter");
+    let twitter = #{twitters};
+    let twitterData = twitter.data.datasets[0].data;
+    let twitterLabels = twitter.data.labels;
+    let twitterP = "";
+    for (let i = 0; i < twitterData.length; i++){
+      twitterP += "<a href='http://localhost:3000/Show?tabla=cliente&campo=twitter&search=%40" + twitterLabels[i].replace("@","") + "'>" + twitterLabels[i] + "</a>" + " tiene " + twitterData[i] + " followers.<br>";
+    }
+    let twitterGraph = new Chart(t, twitter);
+    document.getElementById('twitterP').innerHTML = twitterP;

@@ -18,7 +18,7 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 
 //crear base de datos con nombre twitter
-/*
+
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   console.log("Database created!");
@@ -36,7 +36,7 @@ MongoClient.connect(url, function(err, db) {
     db.close();
   });
 });
-*/
+
 
 var router = express.Router();
 
@@ -52,8 +52,8 @@ var clientTwitter = new Twitter({
 //iniciar mongod - ingresar documentos en coleccion
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-let conString = "postgres://postgres:admin@localhost:5432/turismo";
+let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+//let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -345,45 +345,48 @@ app.get('/Graficas', function(req, resp, next){
                   //Mencho aqui es cuando tengas el query me avisas
                   //Y yo te digo donde poner el render
 
-                  client.query(queryusers, (err, res) => {
-                  if (err) {
-                    console.log(err.stack)
-                    resp.send('ERROR, QUERY')
-                  } else {
-                    let respuesta = res.rows;
+                  MongoClient.connect(url, function(err, db) {
+                    if (err) throw err;
+                    let dbo = db.db("twitter");
+                    //sin limitaciones que nos devuelva todo 100 datos
+                    let query_mongo = { };
+                    let fllwrs = [];
+                    let usrs = [];
+                    //Le quite el limit y sort porque no lo necesitamos
+                    dbo.collection("tweets").find(query_mongo).toArray(function(err, result) {
+                      if (err) throw err;
+                      //Recorremos los 100 tweets
+                      for (let i = 0; i < result.length; i++){
+                        //indexOf devuelve el indice donde esta el parametro, si no existe devuelve -1
+                        //Si no existe el usuario en el array entonces agregamos los valores
+                        if (usrs.indexOf("@" + result[i].user.screen_name) == -1){
+                          fllwrs.push(result[i].user.followers_count);
+                          //console.log(result[i].user.followers_count);
+                          usrs.push("@" + result[i].user.screen_name);
+                          //console.log(result[i].user.name);
+                        }
+                      }
 
-                    for(let i = 0; i < respuesta.length -1; i++){
+                      db.close();
+                      //comprobar que si efectivamente no trono lo asincronico
+                      for(let k = 0; k < fllwrs.length; k++){
+                        console.log(fllwrs[k]);
+                        console.log(usrs[k]);
+                      }
+                      let label = "# de followers";
+                      let labels = "[";
+                      for (let i = 0; i < respuesta.length; i++){
+                        labels += "'" + usrs[i] + "',"
+                      }
+                      labels = labels.slice(0, -1);
+                      labels += "]";
+                      let twitter = createGraphic(fllwrs, colors, label, labels);
+                      //Te das cuenta como el render ESTA DENTRO DE LA FUNCION asi deberia de estar siempre
+                      resp.render('graficas', {ventas:  venta, twitters: twitter, paquetes: paquete, extras: extra, clientes: cliente});
+                    });
 
-                      MongoClient.connect(url, function(err, db) {
-                        if (err) throw err;
-                        var dbo = db.db("twitter");
-                        var query_mongo = {"user.screen_name" : respuesta[i].twitter.substr(1) };
-                        dbo.collection("tweets").find(query_mongo).limit(1).sort( { "created_at" : 1 } ).toArray(function(err, result) {
-                          if (err) throw err;
-                          fllwrs.push(result[0].user.followers_count);
-                          //console.log(result[0].user.followers_count);
-                          usrs.push(result[0].user.name);
-                          //console.log(result[0].user.name);
+                  });
 
-                          db.close();
-                        });
-
-                      });
-
-                    }
-
-                  }
-                })
-
-                //comprobar que si efectivamente no trono lo asincronico
-                  for(let k = 0; k < fllwrs.length; k++){
-                    console.log(fllwrs[k]);
-                    console.log(usrs[k]);
-                  }
-                  //brutal savage rekt
-
-                  //console.log(result[j].user.followers_count);
-                  resp.render('graficas', {ventas:  venta, ganancias: ganancia, paquetes: paquete, extras: extra, clientes: cliente});
                 }
               });
 
