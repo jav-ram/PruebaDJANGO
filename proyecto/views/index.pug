@@ -18,11 +18,20 @@ html
 		div#header
 			ul
 				li
-					a(href="/") Home
+					form(action="/", method="get")
+						input(type="hidden")
+						input#tabla(type="submit", value="Go to Home")
+					br
 				li
-					a(href="/Graficas") graficas
+					form(action="/Graficas", method="get")
+						input(type="hidden")
+						input#tabla(type="submit", value="Graficas")
+					br
 				li
-					a(href="/showTweets") Twitter v2.0
+					form(action="/showTweets", method="get")
+						input(type="hidden")
+						input#tabla(type="submit", value="Tweets")
+					
 
 		div#contenedor
 			h1 Vendedor
