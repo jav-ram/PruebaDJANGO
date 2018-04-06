@@ -52,8 +52,8 @@ var clientTwitter = new Twitter({
 //iniciar mongod - ingresar documentos en coleccion
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-//let conString = "postgres://postgres:admin@localhost:5432/turismo";
+//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -270,6 +270,11 @@ app.get('/Graficas', function(req, resp, next){
   let queryGanancia = "SELECT COUNT(v.paqueteId), vu.origen, vu.destino, p.paqueteId FROM venta as v, vuelo as vu, paquete as p WHERE v.paqueteId=p.paqueteId AND p.vueloId = vu.vueloId GROUP BY p.paqueteId, vu.origen, vu.destino;"
   let queryExtra = "SELECT COUNT(ex.extraId) as count, ex.nombre, ex.precio, (count(ex.extraId)*ex.precio) as total FROM paqueteextras as e, paquete as p, venta as v, extras as ex WHERE v.paqueteId = p.paqueteId AND p.paqueteId = e.paqueteId AND e.extraId = ex.extraId GROUP BY e.extraId, ex.nombre, ex.precio;";
   let queryCliente = "SELECT COUNT(v.clienteId), c.nombre, c.apellido FROM venta as v, cliente as c WHERE v.clienteId = c.clienteId GROUP BY v.clienteId, c.nombre, c.apellido;";
+//queries mongodb
+  let queryusers = "select twitter from CLIENTE ;";
+  var fllwrs = [];
+  var usrs = [];
+
   client.query(queryVenta, (err, respu) => {
     if(err){
       console.log(err.stack);
@@ -339,6 +344,45 @@ app.get('/Graficas', function(req, resp, next){
                   cliente = createGraphic(data, colors, label, labels);
                   //Mencho aqui es cuando tengas el query me avisas
                   //Y yo te digo donde poner el render
+
+                  client.query(queryusers, (err, res) => {
+                  if (err) {
+                    console.log(err.stack)
+                    resp.send('ERROR, QUERY')
+                  } else {
+                    let respuesta = res.rows;
+
+                    for(let i = 0; i < respuesta.length -1; i++){
+
+                      MongoClient.connect(url, function(err, db) {
+                        if (err) throw err;
+                        var dbo = db.db("twitter");
+                        var query_mongo = {"user.screen_name" : respuesta[i].twitter.substr(1) };
+                        dbo.collection("tweets").find(query_mongo).limit(1).sort( { "created_at" : 1 } ).toArray(function(err, result) {
+                          if (err) throw err;
+                          fllwrs.push(result[0].user.followers_count);
+                          //console.log(result[0].user.followers_count);
+                          usrs.push(result[0].user.name);
+                          //console.log(result[0].user.name);
+
+                          db.close();
+                        });
+
+                      });
+
+                    }
+
+                  }
+                })
+
+                //comprobar que si efectivamente no trono lo asincronico
+                  for(let k = 0; k < fllwrs.length; k++){
+                    console.log(fllwrs[k]);
+                    console.log(usrs[k]);
+                  }
+                  //brutal savage rekt
+
+                  //console.log(result[j].user.followers_count);
                   resp.render('graficas', {ventas:  venta, ganancias: ganancia, paquetes: paquete, extras: extra, clientes: cliente});
                 }
               });
