@@ -52,8 +52,8 @@ var clientTwitter = new Twitter({
 //iniciar mongod - ingresar documentos en coleccion
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-let conString = "postgres://postgres:admin@localhost:5432/turismo";
+let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+//let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();
@@ -337,6 +337,8 @@ app.get('/Graficas', function(req, resp, next){
                   labels = labels.slice(0, -1);
                   labels += "]";
                   cliente = createGraphic(data, colors, label, labels);
+                  //Mencho aqui es cuando tengas el query me avisas
+                  //Y yo te digo donde poner el render
                   resp.render('graficas', {ventas:  venta, ganancias: ganancia, paquetes: paquete, extras: extra, clientes: cliente});
                 }
               });

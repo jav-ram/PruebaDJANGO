@@ -18,29 +18,69 @@ head
 body
   div#contenedor
     h1 Cantidad de ventas por vendedor
-    canvas#venta(width="400" height="400")
+    canvas#venta(width="400" height="400")    
+    p#ventaP
   div#contenedor
     h1 Cantidad de paquetes vendidos
     canvas#paquete(width="400" height="400")
+    p#paqueteP
   div#contenedor
     h1 Cuanto generaron los vendedores
     canvas#ganancia(width="400" height="400")
+    p#gananciaP
   div#contenedor
     h1 Cantidad de extras vendidos
     canvas#extra(width="400" height="400")
+    p#extrasP
   div#contenedor
     h1 Cantidad de paquetes vendidos a clientes
     canvas#cliente(width="400" height="400")
+    p#clienteP
   script.
-    let v = document.getElementById("venta");
-    let p = document.getElementById("paquete");
-    let e = document.getElementById("extra");
+    
     let c = document.getElementById("cliente");
+    //Vendedor
+    let v = document.getElementById("venta");
     let venta = #{ventas};
-    let paquete = #{paquetes};
-    let extra = #{extras};
-    let cliente = #{clientes};
+    let ventaData = venta.data.datasets[0].data;
+    let ventaLabels = venta.data.labels;
+    let ventaP = "";
+    for (let i = 0; i < ventaData.length; i++){
+      ventaP += ventaLabels[i] + " vendio: " + ventaData[i] + " paquetes.<br>";
+    }
     let ventaGraph = new Chart(v, venta);
-    let paqueteGraph = new Chart(p, paquete);
+    document.getElementById('ventaP').innerHTML = ventaP;
+    
+    //Extras
+    let e = document.getElementById("extra");
+    let extra = #{extras};
+    let extraData = extra.data.datasets[0].data;
+    let extraLabels = extra.data.labels;
+    let extraP = "";
+    for (let i = 0; i < extraData.length; i++){
+      extraP += extraLabels[i] + " vendidas. Se obtuvo: Q" + extraData[i] + " de ingreso.<br>";
+    }
     let extraGraph = new Chart(e, extra);
+    document.getElementById('extrasP').innerHTML = extraP;
+    
+    //Paquete
+    let p = document.getElementById("paquete");
+    let paquete = #{paquetes};
+    let paqueteData = paquete.data.datasets[0].data;
+    let paqueteLabels = paquete.data.labels;
+    let paqueteP = "";
+    for (let i = 0; i < paqueteData.length; i++){
+      paqueteP += paqueteLabels[i] + " se vendieron: " + paqueteData[i] + " paquetes.<br>";
+    }
+    let paqueteGraph = new Chart(p, paquete);
+    document.getElementById('paqueteP').innerHTML = paqueteP;
+    
+    let cliente = #{clientes};
+    let clienteData = cliente.data.datasets[0].data;
+    let clienteLabels = cliente.data.labels;
+    let clienteP = "";
+    for (let i = 0; i < clienteData.length; i++){
+      clienteP += clienteLabels[i] + " compro: " + clienteData[i] + " paquetes.<br>";
+    }
     let clienteGraph = new Chart(c, cliente);
+    document.getElementById('clienteP').innerHTML = clienteP;
