@@ -52,8 +52,8 @@ var clientTwitter = new Twitter({
 //iniciar mongod - ingresar documentos en coleccion
 
 //"postgres://YourUserName:YourPassword@localhost:5432/YourDatabase";
-let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
-//let conString = "postgres://postgres:admin@localhost:5432/turismo";
+//let conString = "postgres://postgres:j66352769@localhost:5432/turismo";
+let conString = "postgres://postgres:admin@localhost:5432/turismo";
 
 client = new pg.Client(conString);
 client.connect();

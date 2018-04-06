@@ -9,7 +9,8 @@ html
 		div#contenedor
 			h1 User Twitter
 			each tweet in tweets
-				input#data(type="text", name=tweet, placeholder=tweet, value=tweet)
+				div#space
+				input#input(type="button", name=tweet, placeholder=tweet, value=tweet, disabled)
 			
 	          
           
